@@ -29,6 +29,16 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 
 [[package]]
+name = "demo"
+version = "0.2.0"
+dependencies = [
+ "env_logger",
+ "log",
+ "serde",
+ "serde_yaml",
+]
+
+[[package]]
 name = "dtoa"
 version = "0.4.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -45,16 +55,6 @@ dependencies = [
  "log",
  "regex",
  "termcolor",
-]
-
-[[package]]
-name = "hello-rust"
-version = "0.2.0"
-dependencies = [
- "env_logger",
- "log",
- "serde",
- "serde_yaml",
 ]
 
 [[package]]
