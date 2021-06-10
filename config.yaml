@@ -1,0 +1,9 @@
+application:
+  build: something
+  container_name: another_thing
+  environment:
+    - ONE_ENV=false
+    - SEC_ENV=something
+  environment2:
+    one_env2: false
+    sec_env2: something2
