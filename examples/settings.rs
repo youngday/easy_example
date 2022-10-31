@@ -69,18 +69,18 @@ impl Settings {
         // Option 1
         // --------
         // Gather all conf files from conf/ manually
-        let settings = Config::builder()
+        let settings2 = Config::builder()
             // File::with_name(..) is shorthand for File::from(Path::new(..))
-            .add_source(File::with_name("examples/conf/00-default.toml"))
-            .add_source(File::from(Path::new("examples/conf/05-some.yml")))
-            .add_source(File::from(Path::new("examples/conf/99-extra.json")))
+            .add_source(File::with_name("examples/config/00-default.toml"))
+            .add_source(File::from(Path::new("examples/config/05-some.yml")))
+            .add_source(File::from(Path::new("examples/config/99-extra.json")))
             .build()
             .unwrap();
 
         // Print out our settings (as a HashMap)
         println!(
             "\n{:?} \n\n-----------",
-            settings
+            settings2
                 .try_deserialize::<HashMap<String, String>>()
                 .unwrap()
         );
