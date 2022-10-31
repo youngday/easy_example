@@ -20,6 +20,8 @@ use tokio::net::TcpStream;
 use std::error::Error;
 
 
+
+
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 struct Application {
     application: Data,
@@ -53,6 +55,14 @@ struct Data2 {
     info!("some information log");
     warn!("some warning log");
     error!("some error log");
+
+
+
+
+
+
+
+
 
 
     let settings = Settings::new();

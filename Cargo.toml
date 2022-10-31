@@ -8,6 +8,7 @@ edition = "2021"
 log = "0.4"
 env_logger = "0.8"
 config ="0.13"
+glob = "0.3"
 serde = { version = "1.0", features = ["derive"] }
 serde_derive = "1.0.8"
 serde_yaml = "0.8"
