@@ -1,4 +1,5 @@
 use config::{Config, ConfigError, Environment, File};
+use log::info;
 use serde_derive::Deserialize;
 use std::env;
 
@@ -78,7 +79,7 @@ impl Settings {
             .unwrap();
 
         // Print out our settings (as a HashMap)
-        println!(
+        info!(
             "\n{:?} \n\n-----------",
             settings2
                 .try_deserialize::<HashMap<String, String>>()
@@ -86,8 +87,8 @@ impl Settings {
         );
 
         // Now that we're done, let's access our configuration
-        println!("debug: {:?}", s.get_bool("debug"));
-        println!("database: {:?}", s.get::<String>("database.url"));
+        info!("debug: {:?}", s.get_bool("debug"));
+        info!("database: {:?}", s.get::<String>("database.url"));
 
         // You can deserialize (and thus freeze) the entire configuration as
         s.try_deserialize()

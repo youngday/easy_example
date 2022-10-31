@@ -7,9 +7,6 @@ use settings::Settings;
 
 use env_logger::Env;
 
-use std::fs::File;
-use std::io::Read;
-
 use serde::{Deserialize, Serialize};
 
 //#![warn(rust_2018_idioms)]
@@ -55,24 +52,8 @@ pub async fn main() -> Result<(), Box<dyn Error>> {
     let settings = Settings::new();
 
     // Print out our settings
-    println!("{:?}", settings);
+    info!("{:?}", settings);
 
-    let filename = "config.yaml";
-    match File::open(filename) {
-        Ok(mut file) => {
-            let mut content = String::new();
-            file.read_to_string(&mut content).unwrap();
-
-            let application_data: Application = serde_yaml::from_str(&content).unwrap();
-            info!("{:?}", application_data.application.build);
-            info!("{:?}", application_data.application.environment);
-            //info!("{:?}", application_data.application.environment2);
-            //info!("{:?}", application_data.application.environment2.one_env2);
-        }
-        Err(error) => {
-            info!("There is an error {}: {}", filename, error);
-        }
-    }
 
     info!("Start your app.");
 
@@ -80,10 +61,10 @@ pub async fn main() -> Result<(), Box<dyn Error>> {
     //
     // Note that this is the Tokio TcpStream, which is fully async.
     let mut stream = TcpStream::connect("127.0.0.1:6142").await?;
-    println!("created stream");
+    info!("created stream");
 
     let result = stream.write(b"hello world\n").await;
-    println!("wrote to stream; success={:?}", result.is_ok());
+    info!("wrote to stream; success={:?}", result.is_ok());
 
     Ok(())
 }

@@ -48,22 +48,6 @@ async fn main() -> Result<(), reqwest::Error> {
     warn!("some warning log");
     error!("some error log");
 
-    let filename = "config.yaml";
-    match File::open(filename) {
-        Ok(mut file) => {
-            let mut content = String::new();
-            file.read_to_string(&mut content).unwrap();
-
-            let application_data: Application = serde_yaml::from_str(&content).unwrap();
-            info!("{:?}", application_data.application.build);
-            info!("{:?}", application_data.application.environment);
-            //info!("{:?}", application_data.application.environment2);
-            //info!("{:?}", application_data.application.environment2.one_env2);
-        }
-        Err(error) => {
-            info!("There is an error {}: {}", filename, error);
-        }
-    }
 
     info!("Start your app.");
 
