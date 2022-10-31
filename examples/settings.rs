@@ -2,7 +2,6 @@ use config::{Config, ConfigError, Environment, File};
 use serde_derive::Deserialize;
 use std::env;
 
-
 use std::collections::HashMap;
 use std::path::Path;
 
@@ -56,10 +55,7 @@ impl Settings {
             // Add in the current environment file
             // Default to 'development' env
             // Note that this file is _optional_
-            .add_source(
-                File::with_name(&format!("examples/config/{}", run_mode))
-                    .required(false),
-            )
+            .add_source(File::with_name(&format!("examples/config/{}", run_mode)).required(false))
             // Add in a local configuration file
             // This file shouldn't be checked in to git
             .add_source(File::with_name("examples/config/local").required(false))
@@ -70,29 +66,24 @@ impl Settings {
             .set_override("database.url", "postgres://")?
             .build()?;
 
+        // Option 1
+        // --------
+        // Gather all conf files from conf/ manually
+        let settings = Config::builder()
+            // File::with_name(..) is shorthand for File::from(Path::new(..))
+            .add_source(File::with_name("examples/conf/00-default.toml"))
+            .add_source(File::from(Path::new("examples/conf/05-some.yml")))
+            .add_source(File::from(Path::new("examples/conf/99-extra.json")))
+            .build()
+            .unwrap();
 
-
-
-
- // Option 1
-    // --------
-    // Gather all conf files from conf/ manually
-    let settings = Config::builder()
-    // File::with_name(..) is shorthand for File::from(Path::new(..))
-    .add_source(File::with_name("examples/conf/00-default.toml"))
-    .add_source(File::from(Path::new("examples/conf/05-some.yml")))
-    .add_source(File::from(Path::new("examples/conf/99-extra.json")))
-    .build()
-    .unwrap();
-
-// Print out our settings (as a HashMap)
-println!(
-    "\n{:?} \n\n-----------",
-    settings
-        .try_deserialize::<HashMap<String, String>>()
-        .unwrap());
-
-
+        // Print out our settings (as a HashMap)
+        println!(
+            "\n{:?} \n\n-----------",
+            settings
+                .try_deserialize::<HashMap<String, String>>()
+                .unwrap()
+        );
 
         // Now that we're done, let's access our configuration
         println!("debug: {:?}", s.get_bool("debug"));

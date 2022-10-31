@@ -5,7 +5,6 @@ mod settings;
 
 use settings::Settings;
 
-
 use env_logger::Env;
 
 use std::fs::File;
@@ -18,9 +17,6 @@ use tokio::io::AsyncWriteExt;
 use tokio::net::TcpStream;
 
 use std::error::Error;
-
-
-
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 struct Application {
@@ -43,7 +39,7 @@ struct Data2 {
 }
 
 #[tokio::main]
- pub async fn main()-> Result<(), Box<dyn Error>> {
+pub async fn main() -> Result<(), Box<dyn Error>> {
     let env = Env::default()
         .filter_or("MY_LOG_LEVEL", "debug")
         .write_style_or("MY_LOG_STYLE", "always");
@@ -56,21 +52,10 @@ struct Data2 {
     warn!("some warning log");
     error!("some error log");
 
-
-
-
-
-
-
-
-
-
     let settings = Settings::new();
 
     // Print out our settings
     println!("{:?}", settings);
-
-
 
     let filename = "config.yaml";
     match File::open(filename) {
@@ -91,7 +76,7 @@ struct Data2 {
 
     info!("Start your app.");
 
-     // Open a TCP stream to the socket address.
+    // Open a TCP stream to the socket address.
     //
     // Note that this is the Tokio TcpStream, which is fully async.
     let mut stream = TcpStream::connect("127.0.0.1:6142").await?;
@@ -100,8 +85,5 @@ struct Data2 {
     let result = stream.write(b"hello world\n").await;
     println!("wrote to stream; success={:?}", result.is_ok());
 
-
     Ok(())
- 
 }
-
