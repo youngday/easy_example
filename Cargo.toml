@@ -7,7 +7,9 @@ edition = "2021"
 [dependencies]
 log = "0.4"
 env_logger = "0.8"
+config ="0.13"
 serde = { version = "1.0", features = ["derive"] }
+serde_derive = "1.0.8"
 serde_yaml = "0.8"
 tokio = { version = "1.21", features = ["full", "tracing"] }
 tokio-util = { version = "0.7", features = ["full"] }

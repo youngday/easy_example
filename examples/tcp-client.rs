@@ -1,6 +1,11 @@
 #[macro_use]
 extern crate log;
 
+mod settings;
+
+use settings::Settings;
+
+
 use env_logger::Env;
 
 use std::fs::File;
@@ -48,6 +53,14 @@ struct Data2 {
     info!("some information log");
     warn!("some warning log");
     error!("some error log");
+
+
+    let settings = Settings::new();
+
+    // Print out our settings
+    println!("{:?}", settings);
+
+
 
     let filename = "config.yaml";
     match File::open(filename) {
