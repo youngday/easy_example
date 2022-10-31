@@ -8,10 +8,12 @@ use std::io::Read;
 
 use serde::{Deserialize, Serialize};
 
-use async_std::io;
-use async_std::net::TcpStream;
-use async_std::prelude::*;
-use async_std::task;
+//#![warn(rust_2018_idioms)]
+use tokio::io::AsyncWriteExt;
+use tokio::net::TcpStream;
+
+use std::error::Error;
+
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 struct Application {
@@ -33,7 +35,8 @@ struct Data2 {
     sec_env2: String,
 }
 
-fn main() -> io::Result<()> {
+#[tokio::main]
+ pub async fn main()-> Result<(), Box<dyn Error>> {
     let env = Env::default()
         .filter_or("MY_LOG_LEVEL", "debug")
         .write_style_or("MY_LOG_STYLE", "always");
@@ -65,31 +68,17 @@ fn main() -> io::Result<()> {
 
     info!("Start your app.");
 
-    task::block_on(say_hi());
+     // Open a TCP stream to the socket address.
+    //
+    // Note that this is the Tokio TcpStream, which is fully async.
+    let mut stream = TcpStream::connect("127.0.0.1:6142").await?;
+    println!("created stream");
 
-    task::block_on(say_hi2());
+    let result = stream.write(b"hello world\n").await;
+    println!("wrote to stream; success={:?}", result.is_ok());
 
-    task::block_on(async {
-        let mut stream = TcpStream::connect("127.0.0.1:8080").await?;
-        info!("Connected to {}", &stream.peer_addr()?);
 
-        let msg = "hello world";
-        info!("<- {}", msg);
-        stream.write_all(msg.as_bytes()).await?;
-
-        let mut buf = vec![0u8; 1024];
-        let n = stream.read(&mut buf).await?;
-        //let n = stream.read(&mut buf).await?;
-        info!("-> {}\n", String::from_utf8_lossy(&buf[..n]));
-
-        Ok(())
-    })
+    Ok(())
+ 
 }
 
-async fn say_hi() {
-    info!("Task1!");
-}
-
-async fn say_hi2() {
-    info!("Task2!");
-}
