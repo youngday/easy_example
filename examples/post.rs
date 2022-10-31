@@ -3,9 +3,6 @@ extern crate log;
 
 use env_logger::Env;
 
-use std::fs::File;
-use std::io::Read;
-
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
