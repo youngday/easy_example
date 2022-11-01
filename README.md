@@ -8,7 +8,7 @@ rust base frame ,with log , config ,network,zeromq ,mqtt,web,rpc ,and other more
 |-|-|-|-|-|
 |tokio||async task ,tcp ,udp|async frame|
 |config.rs|yaml,toml,json,single file|read config files ,and put into struct data|simplize config function|
-|log4rs||log||
+|log4rs||env_logger||
 ||
 
 
