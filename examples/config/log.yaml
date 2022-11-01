@@ -1,0 +1,25 @@
+refresh_rate: 30 seconds
+
+appenders:
+  console:
+    kind: console
+    encoder:
+      kind: pattern
+      #pattern: "{d(%+)(local)} [{t}] {h({l})} {M}:{m}{n}"
+      pattern: "{d(%m-%d %H:%M:%S.%3f3)(local)} {h({l})} {M}:{m}{n}"
+    filters:
+      - kind: threshold
+        level: debug
+  file:
+    kind: file
+    path: "target/info.json"
+    encoder:
+      kind: json
+    filters:
+      - kind: threshold
+        level: info
+root:
+  level: debug
+  appenders:
+    - file
+    - console

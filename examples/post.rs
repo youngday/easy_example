@@ -1,10 +1,8 @@
-use log::{trace,debug,warn,info,error};
-use env_logger::Env;
+use log::{debug, error, info, trace, warn};
+use log4rs;
 mod settings;
-use settings::Settings;
 use serde::{Deserialize, Serialize};
-
-
+use settings::Settings;
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 struct Application {
     application: Data,
@@ -33,12 +31,7 @@ struct Cat {
 
 #[tokio::main]
 async fn main() -> Result<(), reqwest::Error> {
-    let env = Env::default()
-        .filter_or("MY_LOG_LEVEL", "debug")
-        .write_style_or("MY_LOG_STYLE", "always");
-
-    env_logger::init_from_env(env);
-
+    log4rs::init_file("examples/config/log.yaml", Default::default()).unwrap();
     trace!("some trace log");
     debug!("some debug log");
     info!("some information log");
