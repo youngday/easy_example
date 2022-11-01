@@ -1,13 +1,9 @@
-#[macro_use]
-extern crate log;
-
-mod settings;
-
-use settings::Settings;
-
+use log::{trace,debug,warn,info,error};
 use env_logger::Env;
-
+mod settings;
+use settings::Settings;
 use serde::{Deserialize, Serialize};
+
 
 //#![warn(rust_2018_idioms)]
 use tokio::io::AsyncWriteExt;
@@ -53,7 +49,6 @@ pub async fn main() -> Result<(), Box<dyn Error>> {
 
     // Print out our settings
     info!("{:?}", settings);
-
 
     info!("Start your app.");
 

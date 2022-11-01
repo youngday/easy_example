@@ -1,8 +1,9 @@
-use config::{Config, ConfigError, Environment, File};
 use log::info;
-use serde_derive::Deserialize;
-use std::env;
+use serde::Deserialize;
 
+use config::{Config, ConfigError, Environment, File};
+
+use std::env;
 use std::collections::HashMap;
 use std::path::Path;
 

@@ -1,9 +1,9 @@
-#[macro_use]
-extern crate log;
-
+use log::{trace,debug,warn,info,error};
 use env_logger::Env;
-
+mod settings;
+use settings::Settings;
 use serde::{Deserialize, Serialize};
+
 
 //#![warn(rust_2018_idioms)]
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
@@ -11,7 +11,6 @@ use tokio::net::TcpListener;
 
 use std::env;
 use std::error::Error;
-
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 struct Application {
@@ -34,7 +33,7 @@ struct Data2 {
 }
 
 #[tokio::main]
- pub async fn main()-> Result<(), Box<dyn Error>> {
+pub async fn main() -> Result<(), Box<dyn Error>> {
     let env = Env::default()
         .filter_or("MY_LOG_LEVEL", "debug")
         .write_style_or("MY_LOG_STYLE", "always");
@@ -47,9 +46,13 @@ struct Data2 {
     warn!("some warning log");
     error!("some error log");
 
+    let settings = Settings::new();
+
+    // Print out our settings
+    info!("{:?}", settings);
     info!("Start your app.");
 
-     // Allow passing an address to listen on as the first argument of this
+    // Allow passing an address to listen on as the first argument of this
     // program, but otherwise we'll just set up our TCP listener on
     // 127.0.0.1:8080 for connections.
     let addr = env::args()
@@ -92,10 +95,9 @@ struct Data2 {
                     .write_all(&buf[0..n])
                     .await
                     .expect("failed to write data to socket");
-                    let  outstring=&buf[0..n];
-                info!("received:{:?}",outstring);
+                let outstring = &buf[0..n];
+                info!("received:{:?}", outstring);
             }
         });
     }
 }
-

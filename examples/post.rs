@@ -1,9 +1,9 @@
-#[macro_use]
-extern crate log;
-
+use log::{trace,debug,warn,info,error};
 use env_logger::Env;
-
+mod settings;
+use settings::Settings;
 use serde::{Deserialize, Serialize};
+
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 struct Application {
@@ -45,6 +45,10 @@ async fn main() -> Result<(), reqwest::Error> {
     warn!("some warning log");
     error!("some error log");
 
+    let settings = Settings::new();
+
+    // Print out our settings
+    info!("{:?}", settings);
 
     info!("Start your app.");
 
