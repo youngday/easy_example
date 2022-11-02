@@ -1,8 +1,9 @@
 use log::{debug, error, info, trace, warn};
 use log4rs;
 mod settings;
-use serde::{Deserialize, Serialize};
 use settings::Settings;
+use serde::{Deserialize, Serialize};
+
 
 //#![warn(rust_2018_idioms)]
 use tokio::io::AsyncWriteExt;

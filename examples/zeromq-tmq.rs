@@ -1,15 +1,16 @@
-use async_std::task;
-use config;
-use config::Config;
-use futures::{SinkExt, StreamExt};
-use lazy_static;
 use log::{debug, error, info, trace, warn};
 use log4rs;
-
+mod settings;
+use settings::Settings;
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
-use std::{error::Error, sync::RwLock, time::Duration};
+
+use futures::{SinkExt, StreamExt};
 use tmq::{publish, subscribe, Context};
+// use std::collections::HashMap;
+use std::{error::Error,  time::Duration};
+
+
+use tokio::time::sleep;
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 struct Application {
@@ -31,82 +32,50 @@ struct Data2 {
     sec_env2: String,
 }
 
-lazy_static! {
-    static ref SETTINGS: RwLock<Config> = RwLock::new(Config::default());
-}
 
-#[async_std::main] //async-std = { features = ["attributes"] }
+#[tokio::main] 
 async fn main() -> Result<(), Box<dyn Error>> {
     log4rs::init_file("examples/config/log.yaml", Default::default()).unwrap();
-    trace!("demo trace");
-    debug!("demo debug");
-    info!("demo info");
-    warn!("demo warn");
-    error!("demo error");
-    //global config from local
-    SETTINGS.write()?.set("version", "0.2.0910".to_string())?;
-    info!("version: {}", SETTINGS.read()?.get::<String>("version")?);
-    //global config from file
-    let mut settings = Config::default();
-    settings
-        // File::with_name(..) is shorthand for File::from(Path::new(..))
-        .merge(config::File::with_name("conf/00-default.toml"))
-        .unwrap()
-        .merge(config::File::with_name("conf/05-some.yaml"))
-        .unwrap()
-        .merge(config::File::with_name("conf/99-extra.json"))
-        .unwrap();
-    //decode from toml yaml json ,NOTE:need flat layer,no struct en/decode,simple is good.
-    let file_set = settings.try_into::<HashMap<String, String>>().unwrap();
-    let test_str = file_set.get("debug").unwrap();
-    // Print out our settings (as a HashMap)
-    info!("\n{:?}", file_set);
-    info!("\n{:?}", test_str);
+    trace!("some trace log");
+    debug!("some debug log");
+    info!("some information log");
+    warn!("some warning log");
+    error!("some error log");
+
+    let settings = Settings::new();
+
+    // Print out our settings
+    info!("{:?}", settings);
 
     info!("Start your app.");
 
-    let send_task = task::spawn(async {
-        task::Builder::new()
-            .name("send_task".to_string())
-            .spawn(send())
-            .unwrap()
-            .await;
+    let send_task = tokio::spawn(async {
+        send().await;
     });
-    let recv_udp_task = task::spawn(async {
-        task::Builder::new()
-            .name("recv_udp_task".to_string())
-            .spawn(received_udp())
-            .unwrap()
-            .await;
+    let recv_udp_task = tokio::spawn(async {
+        received_udp().await;
     });
 
-    let recv_serial_task = task::spawn(async {
-        task::Builder::new()
-            .name("recv_serial_task".to_string())
-            .spawn(recv_serial())
-            .unwrap()
-            .await;
+    let recv_serial_task = tokio::spawn(async {
+        recv_serial().await;
     });
-    let recv_http_task = task::spawn(async {
-        task::Builder::new()
-            .name("recv_http_task".to_string())
-            .spawn(recv_http())
-            .unwrap()
-            .await;
+    let recv_http_task = tokio::spawn(async {
+        recv_http().await;
     });
-    let recv_test_task = task::spawn(async {
-        task::Builder::new()
-            .name("recv_test_task".to_string())
-            .spawn(recv_test())
-            .unwrap()
-            .await;
+    let recv_test_task = tokio::spawn(async {
+        recv_test().await;
     });
 
-    send_task.await;
-    recv_udp_task.await;
-    recv_serial_task.await;
-    recv_http_task.await;
-    recv_test_task.await;
+    let result=send_task.await.unwrap();
+    info!("result:{:?}",result);
+    let result=recv_udp_task.await.unwrap();
+    info!("result:{:?}",result);
+    let result=recv_serial_task.await.unwrap();
+    info!("result:{:?}",result);
+    let result=recv_http_task.await.unwrap();
+    info!("result:{:?}",result);
+    let result=recv_test_task.await.unwrap();
+    info!("result:{:?}",result);
 
     Ok(())
 }
@@ -136,7 +105,7 @@ async fn send() {
             .await
             .unwrap();
 
-        task::sleep(Duration::from_millis(2000)).await;
+            sleep(Duration::from_millis(200)).await;
     }
 }
 

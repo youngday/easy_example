@@ -32,7 +32,7 @@ struct Data2 {
 }
 
 #[tokio::main]
-pub async fn main() -> Result<(), Box<dyn Error>> {
+async fn main() -> Result<(), Box<dyn Error>> {
     log4rs::init_file("examples/config/log.yaml", Default::default()).unwrap();
     trace!("some trace log");
     debug!("some debug log");
