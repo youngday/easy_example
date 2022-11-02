@@ -1,0 +1,21 @@
+app:
+  build: something
+  container_name: another_thing
+  environment:
+    - ONE_ENV=false
+    - SEC_ENV=something
+  environment2:
+    one_env2: false
+    sec_env2: something2
+  net_cfg:
+    send_ip: tcp://127.0.0.1:7898
+    recv_ip: tcp://127.0.0.1:7898
+    # pub topics
+    udp_pub_topic: UDP1
+    serial_pub_topic: SERIAL1
+    http_pub_topic: HTTP1
+    # sub topics
+    udp_sub_topic: UDP1
+    serial_sub_topic: SERIAL1
+    http_sub_topic: HTTP1
+    

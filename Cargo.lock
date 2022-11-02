@@ -227,6 +227,7 @@ dependencies = [
  "futures",
  "log",
  "log4rs",
+ "once_cell",
  "reqwest",
  "serde",
  "serde_derive",
