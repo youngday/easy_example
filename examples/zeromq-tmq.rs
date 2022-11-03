@@ -1,16 +1,15 @@
 use log::{debug, error, info, trace, warn};
 use log4rs;
 mod settings;
-use settings::Settings;
 use once_cell::sync::Lazy;
-use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
+use settings::Settings;
+use std::collections::HashMap;
 
 use futures::{SinkExt, StreamExt};
 use tmq::{publish, subscribe, Context};
 
-use std::{error::Error,fs::File,io::Read,  time::Duration};
-
+use std::{error::Error, fs::File, io::Read, time::Duration};
 
 use tokio::time::sleep;
 
@@ -36,6 +35,9 @@ static HASHMAP: Lazy<HashMap<i32, String>> = Lazy::new(|| {
             let _serial_sub_topic = app_data.app.net_cfg.serial_sub_topic;
             let _http_sub_topic = app_data.app.net_cfg.http_sub_topic;
 
+            let _tcp_pub_topic = app_data.app.net_cfg.tcp_pub_topic;
+            let _tcp_sub_topic = app_data.app.net_cfg.tcp_sub_topic;
+
             info!("_send_ip:{:?}", _send_ip);
             info!("_recv_ip:{:?}", _recv_ip);
             info!("_udp_pub_topic:{:?}", _udp_pub_topic);
@@ -44,6 +46,8 @@ static HASHMAP: Lazy<HashMap<i32, String>> = Lazy::new(|| {
             info!("_udp_sub_topic:{:?}", _udp_sub_topic);
             info!("_serial_sub_topic:{:?}", _serial_sub_topic);
             info!("_http_sub_topic:{:?}", _http_sub_topic);
+            info!("_tcp_pub_topic:{:?}", _tcp_pub_topic);
+            info!("_tcp_sub_topic:{:?}", _tcp_sub_topic);
 
             m.insert(0, _send_ip.to_string());
             m.insert(1, _recv_ip.to_string());
@@ -53,6 +57,8 @@ static HASHMAP: Lazy<HashMap<i32, String>> = Lazy::new(|| {
             m.insert(5, _udp_sub_topic.to_string());
             m.insert(6, _serial_sub_topic.to_string());
             m.insert(7, _http_sub_topic.to_string());
+            m.insert(8, _tcp_pub_topic.to_string());
+            m.insert(9, _tcp_sub_topic.to_string());
         }
         Err(error) => {
             info!("There is an error {}: {}", filename, error);
@@ -60,7 +66,6 @@ static HASHMAP: Lazy<HashMap<i32, String>> = Lazy::new(|| {
     }
     m
 });
-
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 struct Application {
@@ -93,10 +98,11 @@ struct NetCfg {
     udp_sub_topic: String,
     serial_sub_topic: String,
     http_sub_topic: String,
+    tcp_pub_topic: String,
+    tcp_sub_topic: String,
 }
 
-
-#[tokio::main] 
+#[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     log4rs::init_file("examples/config/log.yaml", Default::default()).unwrap();
     let version: String = "0.3.1102".to_string();
@@ -111,9 +117,6 @@ async fn main() -> Result<(), Box<dyn Error>> {
     // Print out our settings
     info!("{:?}", settings);
 
-
-
-
     info!("version:{:}", version);
 
     info!("_send_ip:{:?}", HASHMAP.get(&0));
@@ -124,36 +127,41 @@ async fn main() -> Result<(), Box<dyn Error>> {
     let send_task = tokio::spawn(async {
         send().await;
     });
-    let recv_udp_task = tokio::spawn(async {
-        received_udp().await;
-    });
-
     let recv_serial_task = tokio::spawn(async {
         recv_serial().await;
     });
+    let recv_udp_task = tokio::spawn(async {
+        received_udp().await;
+    });
+    let recv_tcp_task = tokio::spawn(async {
+        received_tcp().await;
+    });
+
     let recv_http_task = tokio::spawn(async {
         recv_http().await;
     });
 
-    let result=send_task.await.unwrap();
-    info!("result:{:?}",result);
-    let result=recv_udp_task.await.unwrap();
-    info!("result:{:?}",result);
-    let result=recv_serial_task.await.unwrap();
-    info!("result:{:?}",result);
-    let result=recv_http_task.await.unwrap();
-    info!("result:{:?}",result);
+    let result = send_task.await.unwrap();
+    info!("result:{:?}", result);
 
+    let result = recv_serial_task.await.unwrap();
+    info!("result:{:?}", result);
+    let result = recv_udp_task.await.unwrap();
+    info!("result:{:?}", result);
+    let result = recv_tcp_task.await.unwrap();
+    info!("result:{:?}", result);
+    let result = recv_http_task.await.unwrap();
+    info!("result:{:?}", result);
 
     Ok(())
 }
-
 
 async fn send() {
     let _bindip = HASHMAP.get(&1).unwrap().to_string(); // _recv_ip;
     let _udp_pub_topic = HASHMAP.get(&2).unwrap().to_string(); // _udp_pub_topic;
     let _serial_pub_topic = HASHMAP.get(&3).unwrap().to_string(); // _serial_pub_topic;
     let _http_pub_topic = HASHMAP.get(&4).unwrap().to_string(); // _http_pub_topic;
+    let _tcp_pub_topic = HASHMAP.get(&8).unwrap().to_string(); // _tcp_pub_topic;
 
     let mut socket = publish(&Context::new()).bind(&_bindip).unwrap();
     let mut i = 0;
@@ -167,9 +175,10 @@ async fn send() {
             .await
             .unwrap();
         socket.send(vec![&_http_pub_topic, &message]).await.unwrap();
+        socket.send(vec![&_tcp_pub_topic, &message]).await.unwrap();
         socket.send(vec!["AAA", &message]).await.unwrap();
 
-        tokio::time::sleep(Duration::from_millis(2000)).await;
+        sleep(Duration::from_millis(2000)).await;
     }
 }
 
@@ -192,10 +201,29 @@ async fn received_udp() {
         );
     }
 }
+async fn received_tcp() {
+    let _bindip = HASHMAP.get(&0).unwrap().to_string(); // _send_ip;
+    let _udp_sub_topic = HASHMAP.get(&9).unwrap().to_string(); // _udp_sub_topic;
+    let mut socket = subscribe(&Context::new())
+        .connect(&_bindip)
+        .unwrap()
+        .subscribe(_udp_sub_topic.as_bytes())
+        .unwrap();
+
+    while let Some(msg) = socket.next().await {
+        info!(
+            "Subscribe: {:?}",
+            msg.unwrap()
+                .iter()
+                .map(|item| item.as_str().unwrap_or("invalid text"))
+                .collect::<Vec<&str>>()
+        );
+    }
+}
 
 async fn recv_serial() {
     let _bindip = HASHMAP.get(&0).unwrap().to_string(); //_send_ip;
-    let _serial_sub_topic = HASHMAP.get(&5).unwrap().to_string(); // _serial_sub_topic;
+    let _serial_sub_topic = HASHMAP.get(&6).unwrap().to_string(); // _serial_sub_topic;
     let mut socket = subscribe(&Context::new())
         .connect(&_bindip)
         .unwrap()
@@ -215,7 +243,7 @@ async fn recv_serial() {
 
 async fn recv_http() {
     let _bindip = HASHMAP.get(&0).unwrap().to_string(); // _send_ip;
-    let _http_sub_topic = HASHMAP.get(&5).unwrap().to_string(); // _http_sub_topic;
+    let _http_sub_topic = HASHMAP.get(&7).unwrap().to_string(); // _http_sub_topic;
     let mut socket = subscribe(&Context::new())
         .connect(&_bindip)
         .unwrap()

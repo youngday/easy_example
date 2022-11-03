@@ -14,8 +14,10 @@ app:
     udp_pub_topic: UDP1
     serial_pub_topic: SERIAL1
     http_pub_topic: HTTP1
+    tcp_pub_topic: TCP1
     # sub topics
     udp_sub_topic: UDP1
     serial_sub_topic: SERIAL1
     http_sub_topic: HTTP1
+    tcp_sub_topic: TCP1
     
