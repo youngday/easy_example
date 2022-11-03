@@ -223,6 +223,7 @@ dependencies = [
 name = "demo"
 version = "0.3.0"
 dependencies = [
+ "bytes",
  "config",
  "futures",
  "log",
