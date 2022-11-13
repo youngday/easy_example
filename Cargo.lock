@@ -352,31 +352,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "demo"
-version = "0.3.0"
-dependencies = [
- "bytes",
- "config",
- "confy",
- "futures",
- "log",
- "log4rs",
- "once_cell",
- "pretty_env_logger",
- "reqwest",
- "rumqttc",
- "serde",
- "serde_derive",
- "serde_yaml",
- "serialport",
- "tmq",
- "tokio",
- "tokio-serial",
- "tokio-stream",
- "tokio-util",
-]
-
-[[package]]
 name = "derivative"
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -439,6 +414,30 @@ name = "dlv-list"
 version = "0.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0688c2a7f92e427f44895cd63841bff7b29f8d7a1648b9e7e07a4a365b2e1257"
+
+[[package]]
+name = "easy-example"
+version = "0.3.1"
+dependencies = [
+ "bytes",
+ "config",
+ "confy",
+ "futures",
+ "log",
+ "log4rs",
+ "once_cell",
+ "pretty_env_logger",
+ "reqwest",
+ "rumqttc",
+ "serde",
+ "serde_derive",
+ "serde_yaml",
+ "tmq",
+ "tokio",
+ "tokio-serial",
+ "tokio-stream",
+ "tokio-util",
+]
 
 [[package]]
 name = "either"
@@ -876,26 +875,6 @@ name = "libc"
 version = "0.2.137"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "fc7fcc620a3bff7cdd7a365be3376c97191aeaccc2a603e600951e452615bf89"
-
-[[package]]
-name = "libudev"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "78b324152da65df7bb95acfcaab55e3097ceaab02fb19b228a9eb74d55f135e0"
-dependencies = [
- "libc",
- "libudev-sys",
-]
-
-[[package]]
-name = "libudev-sys"
-version = "0.1.4"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3c8469b4a23b962c1396b9b451dda50ef5b283e8dd309d69033475fa9b334324"
-dependencies = [
- "libc",
- "pkg-config",
-]
 
 [[package]]
 name = "link-cplusplus"
@@ -1702,7 +1681,6 @@ dependencies = [
  "IOKit-sys",
  "bitflags",
  "cfg-if",
- "libudev",
  "mach 0.3.2",
  "nix 0.24.2",
  "regex",
