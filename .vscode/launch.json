@@ -1,0 +1,378 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'post'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=post",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "post",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'post'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=post",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "post",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'udp-echo'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=udp-echo",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "udp-echo",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'udp-echo'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=udp-echo",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "udp-echo",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'serial-print'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=serial-print",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "serial-print",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'serial-print'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=serial-print",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "serial-print",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'settings'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=settings",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "settings",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'settings'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=settings",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "settings",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'tcp-client'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=tcp-client",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "tcp-client",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'tcp-client'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=tcp-client",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "tcp-client",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'channel-mpsc'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=channel-mpsc",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "channel-mpsc",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'channel-mpsc'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=channel-mpsc",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "channel-mpsc",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'zeromq-tmq'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=zeromq-tmq",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "zeromq-tmq",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'zeromq-tmq'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=zeromq-tmq",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "zeromq-tmq",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'mqtt-asyncpubsub'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=mqtt-asyncpubsub",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "mqtt-asyncpubsub",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'mqtt-asyncpubsub'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=mqtt-asyncpubsub",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "mqtt-asyncpubsub",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'tcp-server'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=tcp-server",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "tcp-server",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'tcp-server'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=tcp-server",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "tcp-server",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug example 'udp-client'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=udp-client",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "udp-client",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in example 'udp-client'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--example=udp-client",
+                    "--package=easy-example"
+                ],
+                "filter": {
+                    "name": "udp-client",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
