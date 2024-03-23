@@ -1,6 +1,6 @@
-# easy-example
+# easy_example
 
-rust base frame ,with log , config ,network,zeromq ,mqtt,web,rpc ,and other more
+rust base frame ,with log , config ,network,zeromq ,mqtt,web,rpc ,base64 and other more
 
 ## crate
 
@@ -13,6 +13,7 @@ rust base frame ,with log , config ,network,zeromq ,mqtt,web,rpc ,and other more
 |once_cell|lazy_static|global reference from config file||
 |rumqttc|paho-mqtt|mqtt of rust with tokio||
 |tokio-serial|serial.rs|async serial port||
+|base64||base64|encode decode|
 
 ## examples
 
@@ -27,6 +28,11 @@ rust base frame ,with log , config ,network,zeromq ,mqtt,web,rpc ,and other more
 |channel-mpsc|multi productor,single consummer queue|mpsc,for mpmc ,see flume,async-channel|
 |mqtt-asyncpubsub|mqtt client|mqtt with tokio , run mqtt broker ,before run client |
 |serial-print|async serial port||
+|base64|base64|encode decode|
+
+## vscode build
+
+https://code.visualstudio.com/docs/languages/rust
 
 
 

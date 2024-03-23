@@ -1,0 +1,30 @@
+use log::{debug, error, info, trace, warn};
+use log4rs;
+
+use base64::{Engine as _, engine::{self, general_purpose}, alphabet};
+fn main() {
+
+
+    info!("Base64 testing.");
+  //  trace!("some trace log");
+ //   debug!("some debug log");
+  //  info!("some information log");
+ //   warn!("some warning log");
+  //  error!("some error log");
+
+
+    let a = b"hello world";
+    let b = "aGVsbG8gd29ybGQ=";
+
+    info!("Byte {:?}",a);
+    info!("Base64 {:?}",b);
+
+    info!("encode Base64 {:?}",general_purpose::STANDARD.encode(a));
+    info!("decode Base64 {:?}",&general_purpose::STANDARD.decode(b).unwrap()[..]);
+
+    assert_eq!(general_purpose::STANDARD.encode(a), b);
+  
+    assert_eq!(a, &general_purpose::STANDARD.decode(b).unwrap()[..]);
+
+}
+
