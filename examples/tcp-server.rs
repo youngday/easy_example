@@ -4,7 +4,7 @@ mod settings;
 use serde::{Deserialize, Serialize};
 use settings::Settings;
 
-//#![warn(rust_2018_idioms)]
+
 use tokio::io::{AsyncReadExt, AsyncWriteExt};
 use tokio::net::TcpListener;
 

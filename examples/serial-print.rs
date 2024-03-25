@@ -1,4 +1,4 @@
-#![warn(rust_2018_idioms)]
+
 
 use futures::stream::StreamExt;
 use std::{env, io, str};

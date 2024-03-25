@@ -5,7 +5,7 @@ use settings::Settings;
 use serde::{Deserialize, Serialize};
 
 
-//#![warn(rust_2018_idioms)]
+
 use tokio::io::AsyncWriteExt;
 use tokio::net::TcpStream;
 
