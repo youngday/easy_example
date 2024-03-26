@@ -8,15 +8,15 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug example 'zeromq-tmq'",
+            "name": "simple-log",
             "cargo": {
                 "args": [
                     "build",
-                    "--example=zeromq-tmq",
+                    "--example=simple-log",
                     "--package=easy_example"
                 ],
                 "filter": {
-                    "name": "zeromq-tmq",
+                    "name": "simple-log",
                     "kind": "example"
                 }
             },
@@ -26,11 +26,10 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug unit tests in example 'zeromq-tmq'",
+            "name": "Debug example 'zeromq-tmq'",
             "cargo": {
                 "args": [
-                    "test",
-                    "--no-run",
+                    "build",
                     "--example=zeromq-tmq",
                     "--package=easy_example"
                 ],
@@ -60,25 +59,7 @@
             "args": [],
             "cwd": "${workspaceFolder}"
         },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in example 'base64'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--example=base64",
-                    "--package=easy_example"
-                ],
-                "filter": {
-                    "name": "base64",
-                    "kind": "example"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
+        
         {
             "type": "lldb",
             "request": "launch",
@@ -97,25 +78,7 @@
             "args": [],
             "cwd": "${workspaceFolder}"
         },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in example 'udp-echo'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--example=udp-echo",
-                    "--package=easy_example"
-                ],
-                "filter": {
-                    "name": "udp-echo",
-                    "kind": "example"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
+
         {
             "type": "lldb",
             "request": "launch",
@@ -134,25 +97,7 @@
             "args": [],
             "cwd": "${workspaceFolder}"
         },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in example 'post'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--example=post",
-                    "--package=easy_example"
-                ],
-                "filter": {
-                    "name": "post",
-                    "kind": "example"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
+     
         {
             "type": "lldb",
             "request": "launch",
@@ -171,25 +116,7 @@
             "args": [],
             "cwd": "${workspaceFolder}"
         },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in example 'tcp-client'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--example=tcp-client",
-                    "--package=easy_example"
-                ],
-                "filter": {
-                    "name": "tcp-client",
-                    "kind": "example"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
+      
         {
             "type": "lldb",
             "request": "launch",
@@ -208,25 +135,7 @@
             "args": [],
             "cwd": "${workspaceFolder}"
         },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in example 'tcp-server'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--example=tcp-server",
-                    "--package=easy_example"
-                ],
-                "filter": {
-                    "name": "tcp-server",
-                    "kind": "example"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
+   
         {
             "type": "lldb",
             "request": "launch",
@@ -245,25 +154,7 @@
             "args": [],
             "cwd": "${workspaceFolder}"
         },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in example 'serial-print'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--example=serial-print",
-                    "--package=easy_example"
-                ],
-                "filter": {
-                    "name": "serial-print",
-                    "kind": "example"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
+      
         {
             "type": "lldb",
             "request": "launch",
@@ -282,25 +173,7 @@
             "args": [],
             "cwd": "${workspaceFolder}"
         },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in example 'mqtt-asyncpubsub'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--example=mqtt-asyncpubsub",
-                    "--package=easy_example"
-                ],
-                "filter": {
-                    "name": "mqtt-asyncpubsub",
-                    "kind": "example"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
+      
         {
             "type": "lldb",
             "request": "launch",
@@ -319,25 +192,7 @@
             "args": [],
             "cwd": "${workspaceFolder}"
         },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in example 'udp-client'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--example=udp-client",
-                    "--package=easy_example"
-                ],
-                "filter": {
-                    "name": "udp-client",
-                    "kind": "example"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
+        
         {
             "type": "lldb",
             "request": "launch",
@@ -356,25 +211,7 @@
             "args": [],
             "cwd": "${workspaceFolder}"
         },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in example 'channel-mpsc'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--example=channel-mpsc",
-                    "--package=easy_example"
-                ],
-                "filter": {
-                    "name": "channel-mpsc",
-                    "kind": "example"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
-        },
+       
         {
             "type": "lldb",
             "request": "launch",
@@ -392,25 +229,7 @@
             },
             "args": [],
             "cwd": "${workspaceFolder}"
-        },
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Debug unit tests in example 'settings'",
-            "cargo": {
-                "args": [
-                    "test",
-                    "--no-run",
-                    "--example=settings",
-                    "--package=easy_example"
-                ],
-                "filter": {
-                    "name": "settings",
-                    "kind": "example"
-                }
-            },
-            "args": [],
-            "cwd": "${workspaceFolder}"
         }
+       
     ]
 }
