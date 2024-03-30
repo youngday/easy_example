@@ -43,3 +43,6 @@
 *.rs       text diff=rust
 *.toml     text diff=toml
 Cargo.lock text
+
+
+*.rs linguist-detectable=false
