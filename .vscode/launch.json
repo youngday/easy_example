@@ -4,7 +4,24 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
-        
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "load_csv",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--example=load_csv",
+                    "--package=easy_example"
+                ],
+                "filter": {
+                    "name": "load_csv",
+                    "kind": "example"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
         {
             "type": "lldb",
             "request": "launch",
