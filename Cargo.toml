@@ -67,6 +67,8 @@ path = "examples/plotly/subplots.rs"
 [[example]]
 name = "kaleido_png"
 path = "examples/plotly/kaleido_png.rs"
-
+[[example]]
+name = "statistical_charts"
+path = "examples/plotly/statistical_charts.rs"
 
 
