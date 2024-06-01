@@ -1,6 +1,7 @@
 # easy_example
 
-rust base frame ,with log , config ,network,zeromq ,mqtt,web,rpc ,base64 and other more
+* rust base frame:log , config ,network,zeromq ,mqtt,web,rpc ,base64 
+* dds: zenoh, iceoryx2
 
 ## crate
 
@@ -44,17 +45,24 @@ https://code.visualstudio.com/docs/languages/rust
 
 
 
-# zenoh
+## dds
 
-## target
+### target
 
 zeromq is a good dds rpc, but rust zmq is maintained slowly.
 we could have more fast dds selection,and it can bind to ros.
 
-## easy-zenoh
+### easy-zenoh
 
-rust app ,test ok
+pub and sub ,test ok
 
-## zenoh-cpp 
+#### zenoh-cpp 
 
-c++ app,compiled failed , an issue is checking,come soon.
+c++ app,test ok ,can link with rust zenoh,check:
+
+
+### iceoryx2
+
+pub and sub  ,test ok ,
+
+but not c++ and python app,now are planning,waiting for  release
