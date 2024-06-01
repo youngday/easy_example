@@ -40,7 +40,7 @@ fn basic_image() {
 }
 
 fn trace_from_image_crate_rgb() {
-    let im = image::open("assets/mario.png").unwrap().into_rgb8();
+    let im = image::open("examples/assets/mario.png").unwrap().into_rgb8();
     let trace = Image::new(im).color_model(ColorModel::RGB);
 
     let mut plot = Plot::new();
@@ -90,8 +90,8 @@ fn trace_from_ndarray_rgba() {
 fn main() {
     // Uncomment any of these lines to display the example.
 
-    basic_image();
-    // trace_from_image_crate_rgb();
+    // basic_image();
+    trace_from_image_crate_rgb();
     // trace_from_image_crate_rgba();
     // trace_from_ndarray_rgb();
     // trace_from_ndarray_rgba();

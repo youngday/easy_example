@@ -15,7 +15,7 @@ rust base frame ,with log , config ,network,zeromq ,mqtt,web,rpc ,base64 and oth
 |tokio-serial|serial.rs|async serial port||
 |base64||base64|encode decode|
 |plot|plotly|plot data all you want|plot to web,easy than plotters|
-
+|zenoh|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
 ## examples
 
 |name|fun|note|
@@ -31,10 +31,25 @@ rust base frame ,with log , config ,network,zeromq ,mqtt,web,rpc ,base64 and oth
 |serial-print|async serial port||
 |base64|base64|encode decode|
 |plot|plot data|plot to web |
-
+|z_pub|pub|pub|
+|z_sub|sub|sub|
 ## vscode build
 
 https://code.visualstudio.com/docs/languages/rust
 
 
 
+# zenoh
+
+## target
+
+zeromq is a good dds rpc, but rust zmq is maintained slowly.
+we could have more fast dds selection,and it can bind to ros.
+
+## easy-zenoh
+
+rust app ,test ok
+
+## zenoh-cpp 
+
+c++ app,compiled failed , an issue is checking,come soon.

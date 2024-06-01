@@ -33,6 +33,18 @@ csv = "1.1.6"
 #//TODO: to 0.25, used by plotly
 image = "0.24.9" 
 
+#zenoh+++++
+# tokio = {version="1.37",  features = ["rt-multi-thread", "time", "io-std"] }
+clap = { version="4.5", features = ["derive"] }
+env_logger = "0.11"
+flume = "0.11"
+git-version = "0.3"
+json5 = "0.4"
+zenoh = "0.11.0-rc.3"
+zenoh-ext = "0.11.0-rc.3"
+zenoh-util="0.11.0-rc.3"
+#zenoh------
+
 
 [[example]]
 name = "3d_charts"
