@@ -16,6 +16,7 @@ rust base frame ,with log , config ,network,zeromq ,mqtt,web,rpc ,base64 and oth
 |base64||base64|encode decode|
 |plot|plotly|plot data all you want|plot to web,easy than plotters|
 |zenoh|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
+|iceoryx2|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
 ## examples
 
 |name|fun|note|
@@ -31,8 +32,12 @@ rust base frame ,with log , config ,network,zeromq ,mqtt,web,rpc ,base64 and oth
 |serial-print|async serial port||
 |base64|base64|encode decode|
 |plot|plot data|plot to web |
-|z_pub|pub|pub|
-|z_sub|sub|sub|
+|zenoh_pub|pub|pub|
+|zenoh_sub|sub|sub|
+|ice_pub|pub|pub|
+|ice_sub|sub|sub|
+|discovery|iceoryx2 discovery| |
+
 ## vscode build
 
 https://code.visualstudio.com/docs/languages/rust

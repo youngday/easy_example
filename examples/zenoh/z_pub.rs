@@ -15,7 +15,7 @@ use clap::Parser;
 use std::time::Duration;
 use zenoh::config::Config;
 use zenoh::prelude::r#async::*;
-use easy_example::CommonArgs;
+use easy_example::zenoh_lib::CommonArgs;
 
 #[tokio::main]
 async fn main() {

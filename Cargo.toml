@@ -33,6 +33,9 @@ csv = "1.1.6"
 #//TODO: to 0.25, used by plotly
 image = "0.24.9" 
 
+iceoryx2 ="0.3"
+iceoryx2-bb-container = "0.3"
+
 #zenoh+++++
 # tokio = {version="1.37",  features = ["rt-multi-thread", "time", "io-std"] }
 clap = { version="4.5", features = ["derive"] }
@@ -83,4 +86,21 @@ path = "examples/plotly/kaleido_png.rs"
 name = "statistical_charts"
 path = "examples/plotly/statistical_charts.rs"
 
+# zenoh publish_subscribe
+[[example]]
+name = "zenoh_pub"
+path = "examples/zenoh/z_pub.rs"
+[[example]]
+name = "zenoh_sub"
+path = "examples/zenoh/z_sub.rs"
 
+# iceoryx2 publish_subscribe
+[[example]]
+name = "ice_pub"
+path = "examples/iceoryx2/publisher.rs"
+[[example]]
+name = "ice_sub"
+path = "examples/iceoryx2/subscriber.rs"
+[[example]]
+name = "discovery"
+path = "examples/discovery/discovery.rs"
