@@ -1,8 +1,8 @@
 use log::{debug, error, info, trace, warn};
 use log4rs;
-mod settings;
+use easy_example::settings::Settings;
 use serde::{Deserialize, Serialize};
-use settings::Settings;
+
 
 
 use tokio::io::{AsyncReadExt, AsyncWriteExt};

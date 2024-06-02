@@ -4,7 +4,6 @@ use tmq::{subscribe, Context, Result};
 
 use log::{debug, error, info, trace, warn};
 use log4rs;
-use std::env;
 #[tokio::main]
 async fn main() -> Result<()> {
     log4rs::init_file("examples/config/log.yaml", Default::default()).unwrap();

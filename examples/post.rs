@@ -1,8 +1,7 @@
 use log::{debug, error, info, trace, warn};
 use log4rs;
-mod settings;
 use serde::{Deserialize, Serialize};
-use settings::Settings;
+use easy_example::settings::Settings;
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 struct Application {
     application: Data,

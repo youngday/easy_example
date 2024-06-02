@@ -1,7 +1,6 @@
 use log::{debug, error, info, trace, warn};
 use log4rs;
-mod settings;
-use settings::Settings;
+use easy_example::settings::Settings;
 use serde::{Deserialize, Serialize};
 
 
