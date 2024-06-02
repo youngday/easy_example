@@ -1,3 +1,5 @@
+use log::{debug, error, info, trace, warn};
+use log4rs;
 use tokio::{task, time};
 
 use rumqttc::{self, AsyncClient, MqttOptions, QoS};
@@ -6,8 +8,12 @@ use std::time::Duration;
 
 #[tokio::main(worker_threads = 1)]
 async fn main() -> Result<(), Box<dyn Error>> {
-    pretty_env_logger::init();
-    // color_backtrace::install();
+    log4rs::init_file("examples/config/log.yaml", Default::default()).unwrap();
+    trace!("some trace log");
+    debug!("some debug log");
+    info!("some information log");
+    warn!("some warning log");
+    error!("some error log");
 
     let mut mqttoptions = MqttOptions::new("test-1", "localhost", 1883);
     mqttoptions.set_keep_alive(Duration::from_secs(5));
@@ -20,7 +26,7 @@ async fn main() -> Result<(), Box<dyn Error>> {
 
     loop {
         let event = eventloop.poll().await;
-        println!("{:?}", event.unwrap());
+        info!("{:?}", event.unwrap());
     }
 }
 
