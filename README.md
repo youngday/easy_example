@@ -26,6 +26,8 @@
 |tcp-server|tcp server||
 |post|http client post|with dynamic json|
 |zeromq-tmq|get udp,http data to zeromq|  |
+|zmq_pub|tmq ,zeromq lib, publish|  |
+|zmq_sub|tmq, zeromq lib, subscriber|  |
 |udp-client|udp client||
 |udp-server|udp echo server||
 |channel-mpsc|multi productor,single consummer queue|mpsc,for mpmc ,see flume,async-channel|

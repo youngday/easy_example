@@ -1,9 +1,8 @@
 use log::{debug, error, info, trace, warn};
 use log4rs;
-mod settings;
 use once_cell::sync::Lazy;
 use serde::{Deserialize, Serialize};
-use settings::Settings;
+use easy_example::settings::Settings;
 use std::collections::HashMap;
 
 use futures::{SinkExt, StreamExt};
