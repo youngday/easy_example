@@ -18,28 +18,25 @@
 |plot|plotly|plot data all you want|plot to web,easy than plotters|
 |zenoh|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
 |iceoryx2|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
+|tonic| |grpc   |⚠️ proto genarate .rs files   |
 ## examples
 
 |name|fun|note|
 |-|-|-|
-|tcp-client|tcp client||
-|tcp-server|tcp server||
+|tcp-client,tcp-server|tcp client server||
 |post|http client post|with dynamic json|
 |zeromq-tmq|get udp,http data to zeromq|  |
-|zmq_pub|tmq ,zeromq lib, publish|  |
-|zmq_sub|tmq, zeromq lib, subscriber|  |
-|udp-client|udp client||
-|udp-server|udp echo server||
+|zmq_pub,zmq_sub|tmq ,zeromq lib, publish,subscriber|  |
+|udp-client,udp-server|udp client,server||
 |channel-mpsc|multi productor,single consummer queue|mpsc,for mpmc ,see flume,async-channel|
 |mqtt-asyncpubsub|mqtt client|mqtt with tokio , run mqtt broker ,before run client |
 |serial-print|async serial port||
 |base64|base64|encode decode|
 |plot|plot data|plot to web |
-|zenoh_pub|pub|pub|
-|zenoh_sub|sub|sub|
-|ice_pub|pub|pub|
-|ice_sub|sub|sub|
+|zenoh_pub,zenoh_sub|pub sub|pub sub|
+|ice_pub,ice_sub|pub sub|pub sub|
 |discovery|iceoryx2 discovery| |
+|grpc_client,grpc_server| |⚠️ proto genarate .rs files   |
 
 ## vscode build
 
@@ -68,3 +65,5 @@ c++ app,test ok ,can link with rust zenoh,check:
 pub and sub  ,test ok ,
 
 but not c++ and python app,now are planning,waiting for  release
+
+⚠️

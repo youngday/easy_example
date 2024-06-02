@@ -20,7 +20,7 @@ async fn main() -> Result<()> {
 
     let mut socket = publish(&Context::new()).bind("tcp://127.0.0.1:7899")?;
 
-    let mut i = 0;
+    let mut i: i32 = 0;
     loop {
         i += 1;
         let message = format!("Broadcast #{}", i);

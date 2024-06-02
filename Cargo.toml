@@ -13,11 +13,12 @@ bytes = "1.6.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_derive = "1.0"
 serde_yaml = "0.9"
-tokio = { version = "1.37.0", features = ["full", "tracing"] }
+tokio = { version = "1.38", features = ["full", "tracing"] }
+# tokio = { version = "1.38", features = ["rt-multi-thread", "time", "fs", "macros", "net"] }
+tokio-stream = { version =  "0.1", features = ["net"] }
 tokio-util = { version = "0.7", features = ["full"] }
-tokio-stream = { version = "0.1" }
 reqwest = { version = "0.12", features = ["json"] }
-futures = "0.3"
+futures = { version = "0.3", default-features = false, features = ["alloc"] }
 tmq = { version = "0.4" }
 tokio-serial = "5.4.4"
 rumqttc = "0.24.0"
@@ -47,6 +48,15 @@ zenoh-ext = "0.11.0-rc.3"
 zenoh-util="0.11.0-rc.3"
 #zenoh------
 
+# tonic grpc tls
+# https://github.com/hyperium/tonic/issues/1496  from 0.9 to 0.10,0.11 issues: http to https
+tonic = { version = "0.11", features = ["tls"] }
+prost = "0.12"
+prost-types = { version = "0.12", optional = true }
+async-stream = "0.3"
+
+[build-dependencies]
+tonic-build = { version = "0.11", features = ["prost"] }
 
 [[example]]
 name = "3d_charts"
@@ -113,3 +123,10 @@ path = "examples/zeromq_tmq/subscriber.rs"
 [[example]]
 name = "zeromq_tmq"
 path = "examples/zeromq_tmq/zeromq_tmq.rs"
+
+[[example]]
+name = "grpc_client"
+path = "src/tonic_grpc_tls/client.rs"
+[[example]]
+name = "grpc_server"
+path = "src/tonic_grpc_tls/server.rs"
