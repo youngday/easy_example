@@ -19,6 +19,7 @@
 |zenoh|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
 |iceoryx2|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
 |tonic| |grpc   |⚠️ proto genarate .rs files   |
+|axum websocket| |websocket   | axum example ,tokio-tungstenite |
 ## examples
 
 |name|fun|note|
@@ -37,7 +38,7 @@
 |ice_pub,ice_sub|pub sub|pub sub|
 |discovery|iceoryx2 discovery| |
 |grpc_client,grpc_server| |⚠️ proto genarate .rs files   |
-
+|ws_client,ws_server| | websocket   |
 ## vscode build
 
 https://code.visualstudio.com/docs/languages/rust

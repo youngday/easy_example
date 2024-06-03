@@ -55,6 +55,17 @@ prost = "0.12"
 prost-types = { version = "0.12", optional = true }
 async-stream = "0.3"
 
+#webrtc  axum tokio-tungstenite ++++++++
+axum = { version="0.7", features = ["ws"] }
+axum-extra = { version="0.9", features = ["typed-header"] }
+futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
+headers = "0.4"
+tokio-tungstenite = "0.23"
+tower = { version = "0.4", features = ["util"] }
+tower-http = { version = "0.5.0", features = ["fs", "trace"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+#webrtc  axum tokio-tungstenite -----------------
 [build-dependencies]
 tonic-build = { version = "0.11", features = ["prost"] }
 
@@ -98,18 +109,18 @@ path = "examples/plotly/statistical_charts.rs"
 # zenoh publish_subscribe
 [[example]]
 name = "zenoh_pub"
-path = "examples/zenoh/z_pub.rs"
+path = "examples/dds_zenoh/z_pub.rs"
 [[example]]
 name = "zenoh_sub"
-path = "examples/zenoh/z_sub.rs"
+path = "examples/dds_zenoh/z_sub.rs"
 
 # iceoryx2 publish_subscribe
 [[example]]
 name = "ice_pub"
-path = "examples/iceoryx2/publisher.rs"
+path = "examples/dds_iceoryx2/publisher.rs"
 [[example]]
 name = "ice_sub"
-path = "examples/iceoryx2/subscriber.rs"
+path = "examples/dds_iceoryx2/subscriber.rs"
 [[example]]
 name = "discovery"
 path = "examples/discovery/discovery.rs"
@@ -131,3 +142,11 @@ path = "examples/zeromq_tmq/zeromq_tmq.rs"
 # [[example]]
 # name = "grpc_server"
 # path = "examples/tonic_grpc_tls/server.rs"
+
+[[example]]
+name = "ws_server"
+path = "examples/websocket_axum/server.rs"
+
+[[example]]
+name = "ws_client"
+path = "examples/websocket_axum/client.rs"
