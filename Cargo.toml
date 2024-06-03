@@ -124,9 +124,9 @@ path = "examples/zeromq_tmq/subscriber.rs"
 name = "zeromq_tmq"
 path = "examples/zeromq_tmq/zeromq_tmq.rs"
 
-# [[example]]
-# name = "grpc_client"
-# path = "src/tonic_grpc_tls/client.rs"
-# [[example]]
-# name = "grpc_server"
-# path = "src/tonic_grpc_tls/server.rs"
+[[example]]
+name = "grpc_client"
+path = "examples/tonic_grpc_tls/client.rs"
+[[example]]
+name = "grpc_server"
+path = "examples/tonic_grpc_tls/server.rs"
