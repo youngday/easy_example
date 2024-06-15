@@ -1,6 +1,6 @@
 [package]
 name = "easy_example"
-version = "0.4.0"
+version = "0.4.1"
 authors = ["youngday"]
 edition = "2021"
 
