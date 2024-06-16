@@ -15,7 +15,7 @@
 |rumqttc|paho-mqtt|mqtt of rust with tokio||
 |tokio-serial|serial.rs|async serial port||
 |base64||base64|encode decode|
-|plot|plotly|plot data all you want|plot to web,easy than plotters|
+|plot|plotly|plot data all you want|plot to web,easy than plotters,(https://github.com/youngday/easy_wasm_plotly)|
 |zenoh|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
 |iceoryx2|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
 |poem_grpc| |tonic grpc   |put ./proto build.rs files same as cargo.toml path |
@@ -34,12 +34,11 @@
 |mqtt-asyncpubsub|mqtt client|mqtt with tokio , run mqtt broker ,before run client |
 |serial-print|async serial port||
 |base64|base64|encode decode|
-|plot|plot data|plot to web |
+|plot|plot data|https://github.com/youngday/easy_wasm_plotly |
 |zenoh_pub,zenoh_sub|pub sub|pub sub|
 |ice_pub,ice_sub|pub sub|pub sub|
 |discovery|iceoryx2 discovery| |
-|grpc-client,grpc-server,grpc-jsoncodec-server|poem grpc examples ,with json codec |⚠️
- // please uncomment for grpc   |
+|grpc-client,grpc-server,grpc-jsoncodec-server|poem grpc examples ,with json codec |⚠️ grpc branch   |
 |ws_client,ws_server| | websocket   |
 |quic_server,quic_client|quic,http3|quic,http3|
 ## vscode build

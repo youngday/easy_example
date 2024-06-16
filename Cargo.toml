@@ -39,14 +39,12 @@ tmq = { version = "0.4" }
 tokio-serial = "5.4.4"
 rumqttc = "0.24.0"
 base64 = "0.22"
-plotly = { version = "0.8.4",features = ["plotly_image", "plotly_ndarray","kaleido"]}
 
 ndarray = "0.15.6"
 rand = "0.8.5"
 rand_distr = "0.4.3"
 itertools = "0.13.0"
 csv = "1.1.6"
-#//TODO: to 0.25, used by plotly
 image = "0.24.9" 
 
 iceoryx2 ="0.3"
@@ -64,18 +62,10 @@ zenoh-ext = "0.11.0-rc.3"
 zenoh-util="0.11.0-rc.3"
 #zenoh------
 
-#grpc 
-prost = "0.12"
-prost-build="0.12"
-grpcio = "0.13.0"
-prost-types = { version = "0.12", optional = true }
-async-stream = "0.3"
 
 axum = { version="0.7", features = ["ws"] }
 axum-extra = { version="0.9", features = ["typed-header"] }
 poem="3.0.1"
-# # please uncomment for grpc
-# poem-grpc = { version = "0.4.1", features = ["json-codec"] }
 
 futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
 headers = "0.4"
@@ -125,43 +115,6 @@ url = "2"
 [build-dependencies]
 poem-grpc-build="0.4.0"
 
-[[example]]
-name = "3d_charts"
-path = "examples/plotly/3d_charts.rs"
-[[example]]
-name = "basic_charts"
-path = "examples/plotly/basic_charts.rs"
-[[example]]
-name = "custom_controls"
-path = "examples/plotly/custom_controls.rs"
-[[example]]
-name = "financial_charts"
-path = "examples/plotly/financial_charts.rs"
-[[example]]
-name = "images"
-path = "examples/plotly/images.rs"
-[[example]]
-name = "maps"
-path = "examples/plotly/maps.rs"
-[[example]]
-name = "ndarray"
-path = "examples/plotly/ndarray.rs"
-[[example]]
-name = "scientific_charts"
-path = "examples/plotly/scientific_charts.rs"
-[[example]]
-name = "shapes"
-path = "examples/plotly/shapes.rs"
-[[example]]
-name = "subplots"
-path = "examples/plotly/subplots.rs"
-[[example]]
-name = "kaleido_png"
-path = "examples/plotly/kaleido_png.rs"
-[[example]]
-name = "statistical_charts"
-path = "examples/plotly/statistical_charts.rs"
-
 # zenoh publish_subscribe
 [[example]]
 name = "zenoh_pub"
@@ -207,14 +160,3 @@ path = "examples/quic/client.rs"
 name = "quic_server"
 path = "examples/quic/server.rs"
 
-# # please uncomment for grpc
-# [[example]]
-# name = "grpc-client"
-# path = "examples/grpc_poem/helloworld/src/client.rs"
-
-# [[example]]
-# name = "grpc-server"
-# path = "examples/grpc_poem/helloworld/src/server.rs"
-# [[example]]
-# name = "grpc-jsoncodec-server"
-# path = "examples/grpc_poem/jsoncodec/src/server.rs"
