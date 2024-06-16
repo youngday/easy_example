@@ -72,7 +72,7 @@ async-stream = "0.3"
 axum = { version="0.7", features = ["ws"] }
 axum-extra = { version="0.9", features = ["typed-header"] }
 poem="3.0.1"
-poem-grpc = "0.4.1"
+poem-grpc = { version = "0.4.1", features = ["json-codec"] }
 
 futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
 headers = "0.4"
@@ -212,4 +212,4 @@ name = "grpc-helloworld-server"
 path = "examples/grpc_poem/helloworld/src/server.rs"
 [[example]]
 name = "grpc-jsoncodec-server"
-path = "examples/grpc_poem/helloworld/src/server.rs"
+path = "examples/grpc_poem/jsoncodec/src/server.rs"

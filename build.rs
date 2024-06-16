@@ -1,7 +1,10 @@
 use std::io::Result;
 
-use poem_grpc_build::compile_protos;
+use poem_grpc_build::Config;
 
 fn main() -> Result<()> {
-    compile_protos(&["./proto/helloworld.proto"], &["./proto"])
+    Config::new()
+        .codec("::poem_grpc::codec::JsonCodec")
+        .type_attribute(".", "#[derive(serde::Deserialize, serde::Serialize)]")
+        .compile(&["./proto/helloworld.proto"], &["./proto"])
 }

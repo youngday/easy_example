@@ -3475,6 +3475,8 @@ dependencies = [
  "prost",
  "prost-types",
  "rustls 0.22.4",
+ "serde",
+ "serde_json",
  "thiserror",
  "tokio",
  "tokio-rustls 0.25.0",
