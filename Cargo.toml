@@ -204,11 +204,11 @@ name = "quic_server"
 path = "examples/quic/server.rs"
 
 [[example]]
-name = "grpc-helloworld-client"
+name = "grpc-client"
 path = "examples/grpc_poem/helloworld/src/client.rs"
 
 [[example]]
-name = "grpc-helloworld-server"
+name = "grpc-server"
 path = "examples/grpc_poem/helloworld/src/server.rs"
 [[example]]
 name = "grpc-jsoncodec-server"

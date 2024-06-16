@@ -18,7 +18,7 @@
 |plot|plotly|plot data all you want|plot to web,easy than plotters|
 |zenoh|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
 |iceoryx2|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
-|tonic| |grpc   |⚠️ proto genarate .rs files   |
+|poem_grpc| |tonic grpc   |put ./proto build.rs files same as cargo.toml path |
 |axum websocket| |websocket   | axum example ,tokio-tungstenite |
 |quinn quic| |quic http3   | quic http3 client server |
 ## examples
@@ -38,7 +38,7 @@
 |zenoh_pub,zenoh_sub|pub sub|pub sub|
 |ice_pub,ice_sub|pub sub|pub sub|
 |discovery|iceoryx2 discovery| |
-|grpc_client,grpc_server| |⚠️ proto genarate .rs files   |
+|grpc-client,grpc-server,grpc-jsoncodec-server|poem grpc examples ,with json codec | easy genarate proto   |
 |ws_client,ws_server| | websocket   |
 |quic_server,quic_client|quic,http3|quic,http3|
 ## vscode build
