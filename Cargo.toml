@@ -74,7 +74,8 @@ async-stream = "0.3"
 axum = { version="0.7", features = ["ws"] }
 axum-extra = { version="0.9", features = ["typed-header"] }
 poem="3.0.1"
-poem-grpc = { version = "0.4.1", features = ["json-codec"] }
+# # please uncomment for grpc
+# poem-grpc = { version = "0.4.1", features = ["json-codec"] }
 
 futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
 headers = "0.4"
@@ -206,14 +207,14 @@ path = "examples/quic/client.rs"
 name = "quic_server"
 path = "examples/quic/server.rs"
 
-# please uncomment for grpc
-[[example]]
-name = "grpc-client"
-path = "examples/grpc_poem/helloworld/src/client.rs"
+# # please uncomment for grpc
+# [[example]]
+# name = "grpc-client"
+# path = "examples/grpc_poem/helloworld/src/client.rs"
 
-[[example]]
-name = "grpc-server"
-path = "examples/grpc_poem/helloworld/src/server.rs"
-[[example]]
-name = "grpc-jsoncodec-server"
-path = "examples/grpc_poem/jsoncodec/src/server.rs"
+# [[example]]
+# name = "grpc-server"
+# path = "examples/grpc_poem/helloworld/src/server.rs"
+# [[example]]
+# name = "grpc-jsoncodec-server"
+# path = "examples/grpc_poem/jsoncodec/src/server.rs"

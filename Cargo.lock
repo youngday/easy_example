@@ -1431,7 +1431,6 @@ dependencies = [
  "pin-project-lite",
  "plotly",
  "poem",
- "poem-grpc",
  "poem-grpc-build",
  "prost",
  "prost-build",
@@ -3577,39 +3576,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "poem-grpc"
-version = "0.4.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ec1e18e568fc73e0392b6d9e63938318f6829ee9b8eab96e046ba694732baa3a"
-dependencies = [
- "async-stream",
- "base64 0.22.1",
- "bytes",
- "fastrand 2.1.0",
- "flate2",
- "futures-util",
- "http",
- "http-body-util",
- "hyper",
- "hyper-util",
- "itoa",
- "percent-encoding",
- "poem",
- "poem-grpc-build",
- "prost",
- "prost-types",
- "rustls 0.22.4",
- "serde",
- "serde_json",
- "thiserror",
- "tokio",
- "tokio-rustls 0.25.0",
- "tokio-stream",
- "tower-service",
- "webpki-roots",
-]
-
-[[package]]
 name = "poem-grpc-build"
 version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -5249,7 +5215,6 @@ dependencies = [
  "futures-core",
  "pin-project-lite",
  "tokio",
- "tokio-util",
 ]
 
 [[package]]
