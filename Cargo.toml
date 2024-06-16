@@ -64,16 +64,16 @@ zenoh-ext = "0.11.0-rc.3"
 zenoh-util="0.11.0-rc.3"
 #zenoh------
 
-# tonic grpc tls
-# https://github.com/hyperium/tonic/issues/1496  from 0.9 to 0.10,0.11 issues: http to https
-tonic = { version = "0.11", features = ["tls"] }
+#grpc 
 prost = "0.12"
 prost-types = { version = "0.12", optional = true }
 async-stream = "0.3"
 
-#webrtc  axum tokio-tungstenite ++++++++
 axum = { version="0.7", features = ["ws"] }
 axum-extra = { version="0.9", features = ["typed-header"] }
+poem="3.0.1"
+poem-grpc = "0.4.1"
+
 futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
 headers = "0.4"
 tokio-tungstenite = "0.23"
@@ -81,7 +81,7 @@ tower = { version = "0.4", features = ["util"] }
 tower-http = { version = "0.5.0", features = ["fs", "trace"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3", features = ["env-filter"] }
-#webrtc  axum tokio-tungstenite -----------------
+
 
 
 # quiche++++++++++++++++++++++++++++++++++++++++++++
@@ -98,6 +98,10 @@ smol = { version = "2", optional = true }
 thiserror = "1.0.21"
 udp = { package = "quinn-udp",  version = "0.5", default-features = false }
 #quiche----------------------------------------------
+
+
+
+
 [dev-dependencies]
 # quiche++++++++++++++++++++++++++++++++++++++++++++
 anyhow = "1.0.22"
@@ -108,13 +112,14 @@ rand = "0.8"
 rcgen = "0.13"
 rustls-pemfile = "2"
 clap = { version = "4", features = ["derive"] }
-tokio = { version = "1.28.1", features = ["rt", "rt-multi-thread", "time", "macros", "sync"] }
+tokio = { version = "1.38", features = ["rt", "rt-multi-thread", "time", "macros", "sync"] }
 tracing-subscriber = { version = "0.3.0", default-features = false, features = ["env-filter", "fmt", "ansi", "time", "local-time"] }
 tracing-futures = { version = "0.2.0", default-features = false, features = ["std-future"] }
 url = "2"
 #quiche----------------------------------------------
+
 [build-dependencies]
-tonic-build = { version = "0.11", features = ["prost"] }
+poem-grpc-build="0.4.0"
 
 [[example]]
 name = "3d_charts"
@@ -182,14 +187,6 @@ path = "examples/zeromq_tmq/subscriber.rs"
 name = "zeromq_tmq"
 path = "examples/zeromq_tmq/zeromq_tmq.rs"
 
-# ⚠️ disable comment in build.rs ,workflow not worked on github
-# [[example]]
-# name = "grpc_client"
-# path = "examples/tonic_grpc_tls/client.rs"
-# [[example]]
-# name = "grpc_server"
-# path = "examples/tonic_grpc_tls/server.rs"
-
 [[example]]
 name = "ws_server"
 path = "examples/websocket_axum/server.rs"
@@ -205,3 +202,14 @@ path = "examples/quic/client.rs"
 [[example]]
 name = "quic_server"
 path = "examples/quic/server.rs"
+
+[[example]]
+name = "grpc-helloworld-client"
+path = "examples/grpc_poem/helloworld/src/client.rs"
+
+[[example]]
+name = "grpc-helloworld-server"
+path = "examples/grpc_poem/helloworld/src/server.rs"
+[[example]]
+name = "grpc-jsoncodec-server"
+path = "examples/grpc_poem/helloworld/src/server.rs"

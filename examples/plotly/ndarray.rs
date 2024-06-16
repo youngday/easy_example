@@ -4,18 +4,27 @@ use ndarray::{Array, Ix1, Ix2};
 use plotly::common::Mode;
 use plotly::ndarray::ArrayTraces;
 use plotly::{Plot, Scatter};
-
+use std::thread;
+use std::time::Duration;
 fn single_ndarray_trace() {
     let n: usize = 11;
     let t: Array<f64, Ix1> = Array::range(0., 10., 10. / n as f64);
     let ys: Array<f64, Ix1> = t.iter().map(|v| (*v).powf(2.)).collect();
 
-    let trace = Scatter::from_array(t, ys).mode(Mode::LinesMarkers);
-
     let mut plot = Plot::new();
-    plot.add_trace(trace);
+    thread::sleep(Duration::from_millis(1000));
+    let trace = Scatter::from_array(t.clone(), ys.clone()).mode(Mode::LinesMarkers);
 
-    plot.show();
+    loop {
+        thread::sleep(Duration::from_millis(1000));
+        let trace = Scatter::from_array(t.clone(), ys.clone()).mode(Mode::LinesMarkers);
+
+        log::info!("run");
+        plot.add_trace(trace);
+    
+        plot.show();
+    }
+
 }
 
 fn multiple_ndarray_traces_over_columns() {
