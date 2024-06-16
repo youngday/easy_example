@@ -66,6 +66,8 @@ zenoh-util="0.11.0-rc.3"
 
 #grpc 
 prost = "0.12"
+prost-build="0.12"
+grpcio = "0.13.0"
 prost-types = { version = "0.12", optional = true }
 async-stream = "0.3"
 
