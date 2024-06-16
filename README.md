@@ -38,7 +38,8 @@
 |zenoh_pub,zenoh_sub|pub sub|pub sub|
 |ice_pub,ice_sub|pub sub|pub sub|
 |discovery|iceoryx2 discovery| |
-|grpc-client,grpc-server,grpc-jsoncodec-server|poem grpc examples ,with json codec | easy genarate proto   |
+|grpc-client,grpc-server,grpc-jsoncodec-server|poem grpc examples ,with json codec |⚠️
+ // please uncomment for grpc   |
 |ws_client,ws_server| | websocket   |
 |quic_server,quic_client|quic,http3|quic,http3|
 ## vscode build
@@ -78,3 +79,10 @@ cargo run --example quic_server ./
 
 cargo run --example quic_client https://localhost:4433/Cargo.toml
 ```
+
+## grpc 
+
+for building proto  not work on github workflow,
+
+⚠️  // please uncomment for grpc 
+

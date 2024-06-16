@@ -203,13 +203,14 @@ path = "examples/quic/client.rs"
 name = "quic_server"
 path = "examples/quic/server.rs"
 
-[[example]]
-name = "grpc-client"
-path = "examples/grpc_poem/helloworld/src/client.rs"
+# please uncomment for grpc
+# [[example]]
+# name = "grpc-client"
+# path = "examples/grpc_poem/helloworld/src/client.rs"
 
-[[example]]
-name = "grpc-server"
-path = "examples/grpc_poem/helloworld/src/server.rs"
-[[example]]
-name = "grpc-jsoncodec-server"
-path = "examples/grpc_poem/jsoncodec/src/server.rs"
+# [[example]]
+# name = "grpc-server"
+# path = "examples/grpc_poem/helloworld/src/server.rs"
+# [[example]]
+# name = "grpc-jsoncodec-server"
+# path = "examples/grpc_poem/jsoncodec/src/server.rs"

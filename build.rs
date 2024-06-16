@@ -1,10 +1,11 @@
-use std::io::Result;
+// please uncomment for grpc
+// use std::io::Result;
 
-use poem_grpc_build::Config;
+// use poem_grpc_build::Config;
 
-fn main() -> Result<()> {
-    Config::new()
-        .codec("::poem_grpc::codec::JsonCodec")
-        .type_attribute(".", "#[derive(serde::Deserialize, serde::Serialize)]")
-        .compile(&["./proto/helloworld.proto"], &["./proto"])
-}
+// fn main() -> Result<()> {
+//     Config::new()
+//         .codec("::poem_grpc::codec::JsonCodec")
+//         .type_attribute(".", "#[derive(serde::Deserialize, serde::Serialize)]")
+//         .compile(&["./proto/helloworld.proto"], &["./proto"])
+// }
