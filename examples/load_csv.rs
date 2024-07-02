@@ -3,6 +3,8 @@
 use std::env;
 use std::path::PathBuf;
 use serde::Deserialize;
+use log::{debug, error, info, trace, warn};
+use log4rs;
 
 #[derive(Deserialize)]
 #[allow(dead_code)]
@@ -37,7 +39,7 @@ fn load_apple_data() -> Vec<FinData> {
 }
 
 fn main() {
-
+    log4rs::init_file("examples/config/log.yaml", Default::default()).unwrap();
     let data = load_apple_data();
     let date: Vec<String> = data.iter().map(|d| d.date.clone()).collect();
     let high: Vec<f64> = data.iter().map(|d| d.high).collect();
