@@ -43,15 +43,15 @@
         {
             "type": "lldb",
             "request": "launch",
-            "name": "Debug example 'zeromq-tmq'",
+            "name": "Debug example 'zeromq_tmq'",
             "cargo": {
                 "args": [
                     "build",
-                    "--example=zeromq-tmq",
+                    "--example=zeromq_tmq",
                     "--package=easy_example"
                 ],
                 "filter": {
-                    "name": "zeromq-tmq",
+                    "name": "zeromq_tmq",
                     "kind": "example"
                 }
             },

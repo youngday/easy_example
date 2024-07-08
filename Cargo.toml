@@ -44,7 +44,7 @@ ndarray = "0.15.6"
 rand = "0.8.5"
 rand_distr = "0.4.3"
 itertools = "0.13.0"
-csv = "1.1.6"
+csv = "1.3"
 image = "0.25.1" 
 
 iceoryx2 ="0.3"
@@ -57,9 +57,9 @@ env_logger = "0.11"
 flume = "0.11"
 git-version = "0.3"
 json5 = "0.4"
-zenoh = "0.11.0-rc.3"
-zenoh-ext = "0.11.0-rc.3"
-zenoh-util="0.11.0-rc.3"
+zenoh = "0.11.0"
+zenoh-ext = "0.11.0"
+zenoh-util="0.11.0"
 #zenoh------
 
 
@@ -78,10 +78,10 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 
 
 # quiche++++++++++++++++++++++++++++++++++++++++++++
-async-io = { version = "2.0", optional = true }
-async-std = { version = "1.11", optional = true }
+async-io = { version = "2.3", optional = true }
+async-std = { version = "1.12", optional = true }
 # Enables futures::io::{AsyncRead, AsyncWrite} support for streams
-futures-io = { version = "0.3.19", optional = true }
+futures-io = { version = "0.3", optional = true }
 rustc-hash = "2.0.0"
 pin-project-lite = "0.2.14"
 quinn="0.11.1"
@@ -89,7 +89,7 @@ proto = { package = "quinn-proto",version = "0.11.2", default-features = false }
 protoc-rust = "2"
 rustls = { version = "0.23", default-features = false, features = ["ring", "std"], optional = true }
 smol = { version = "2", optional = true }
-thiserror = "1.0.21"
+thiserror = "1.0"
 udp = { package = "quinn-udp",  version = "0.5", default-features = false }
 #quiche----------------------------------------------
 
@@ -107,8 +107,8 @@ rcgen = "0.13"
 rustls-pemfile = "2.1"
 clap = { version = "4.5", features = ["derive"] }
 tokio = { version = "1.38", features = ["rt", "rt-multi-thread", "time", "macros", "sync"] }
-tracing-subscriber = { version = "0.3.0", default-features = false, features = ["env-filter", "fmt", "ansi", "time", "local-time"] }
-tracing-futures = { version = "0.2.0", default-features = false, features = ["std-future"] }
+tracing-subscriber = { version = "0.3", default-features = false, features = ["env-filter", "fmt", "ansi", "time", "local-time"] }
+tracing-futures = { version = "0.2", default-features = false, features = ["std-future"] }
 url = "2.5"
 #quiche----------------------------------------------
 
