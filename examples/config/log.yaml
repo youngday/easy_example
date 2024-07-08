@@ -5,7 +5,7 @@ appenders:
     kind: console
     encoder:
       #pattern: "{d(%+)(local)} [{t}] {h({l})} {M}:{m}{n}"
-      pattern: "{d(%m-%d %H:%M:%S.%3f3)(local)} {h({l})} {M}:{m}{n}"
+      pattern: "{d(%m-%d %H:%M:%S.%3f)(local)} {h({l})} {P} [{f}:{L}] {M}: {m}{n}"
     filters:
       - kind: threshold
         level: debug

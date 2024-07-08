@@ -20,15 +20,19 @@ async fn main() -> Result<()> {
 
     let mut socket = publish(&Context::new()).bind("tcp://127.0.0.1:7899")?;
 
-    let mut i: i32 = 0;
+    let mut i: f64 = 0.0;
     loop {
-        i += 1;
-        let message = format!("Broadcast #{}", i);
+ 
+        if i<100.0 {
+            i += 1.0;
+        }
+        else {i=0.0;}
+        let message = format!("{}", i*0.01);
         info!("Publish: {}", message);
 
         socket
             .send(vec![b"topic" as &[u8], message.as_bytes()])
             .await?;
-        sleep(Duration::from_secs(1)).await;
+        sleep(Duration::from_secs_f64(0.08)).await;
     }
 }
