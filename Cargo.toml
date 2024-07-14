@@ -23,6 +23,7 @@ log = ["tracing/log", "proto/log", "udp/log"]
 [dependencies]
 log = "0.4"
 log4rs = { version = "1.3.0", features = ["toml", "json_encoder"] }
+pretty_env_logger ="0.5.0"
 config = "0.14"
 once_cell = { version = "1.19.0" }
 bytes = "1.6.0"
@@ -38,6 +39,7 @@ futures = { version = "0.3", default-features = false, features = ["alloc"] }
 tmq = { version = "0.4" }
 tokio-serial = "5.4.4"
 rumqttc = "0.24.0"
+rumqttd="0.19.0"
 base64 = "0.22"
 
 ndarray = "0.15.6"
@@ -159,3 +161,10 @@ path = "examples/quic/client.rs"
 name = "quic_server"
 path = "examples/quic/server.rs"
 
+[[example]]
+name = "mqtt_asyncpubsub"
+path = "examples/mqtt/mqtt_asyncpubsub.rs"
+
+[[example]]
+name = "rumqttd"
+path = "examples/mqtt/rumqttd.rs"

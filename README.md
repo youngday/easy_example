@@ -31,6 +31,7 @@
 |zmq_pub,zmq_sub|tmq ,zeromq lib, publish,subscriber|  |
 |udp-client,udp-server|udp client,server||
 |channel-mpsc|multi productor,single consummer queue|mpsc,for mpmc ,see flume,async-channel|
+|mqttd|mqtt broker|mqtt with tokio , run mqtt broker ,before run client , ```cargo run --release --example rumqttd -- -c rumqttd.toml -vvv   ```|
 |mqtt-asyncpubsub|mqtt client|mqtt with tokio , run mqtt broker ,before run client |
 |serial-print|async serial port||
 |base64|base64|encode decode|
@@ -67,9 +68,7 @@ c++ app,test ok ,can link with rust zenoh,check:
 
 pub and sub  ,test ok ,
 
-but not c++ and python app,now are planning,waiting for  release
-
-⚠️
+⚠️ but not c++ and python app,now are planning,waiting for  release
 
 ### quiche
 
@@ -84,4 +83,18 @@ cargo run --example quic_client https://localhost:4433/Cargo.toml
 for building proto  not work on github workflow,
 
 ⚠️  // please uncomment for grpc 
+
+## mqtt
+
+mqtt update to v5 protocol
+
+run rumqttd broker first 
+
+```sh
+cargo run --release --example rumqttd -- -c rumqttd.toml -vvv 
+```
+or ./rumqtt.sh
+
+## 
+
 
