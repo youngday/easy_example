@@ -15,8 +15,8 @@ use iceoryx2::prelude::*;
 use easy_example::transmission_data::TransmissionData;
 
 const CYCLE_TIME: Duration = Duration::from_secs(1);
-
-fn main() -> Result<(), Box<dyn std::error::Error>> {
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let service_name = ServiceName::new("My/Funk/ServiceName")?;
 
     let service = zero_copy::Service::new(&service_name)
