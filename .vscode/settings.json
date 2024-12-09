@@ -4,6 +4,7 @@
         "./Cargo.toml"
     ],
     "cSpell.words": [
+        "fastwebsockets",
         "helloworld"
     ]
 }
