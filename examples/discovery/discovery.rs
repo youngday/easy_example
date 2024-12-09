@@ -13,11 +13,10 @@
 use iceoryx2::prelude::*;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let services = zero_copy::Service::list()?;
-
-    for service in services {
+    ipc::Service::list(Config::global_config(), |service| {
         println!("\n{:#?}", &service);
-    }
+        CallbackProgression::Continue
+    })?;
 
     Ok(())
 }
