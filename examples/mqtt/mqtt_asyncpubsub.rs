@@ -1,12 +1,12 @@
-use log::{debug, error, info, trace, warn};
+// use log::{debug, error, info, trace, warn};
+use log::info;
 use log4rs;
 use tokio::{task, time};
 
 use std::error::Error;
 use std::time::Duration;
 
-use rumqttc::v5::mqttbytes::QoS;
-use rumqttc::v5::{AsyncClient, MqttOptions};
+use rumqttc::v5::{AsyncClient, MqttOptions,mqttbytes::QoS};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), Box<dyn Error>> {

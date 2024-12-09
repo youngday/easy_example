@@ -9,29 +9,30 @@
 // which is available at https://opensource.org/licenses/MIT.
 //
 // SPDX-License-Identifier: Apache-2.0 OR MIT
-// mod transmission_data;
+
 use core::time::Duration;
+use easy_example::TransmissionData;
 use iceoryx2::prelude::*;
-use easy_example::transmission_data::TransmissionData;
 
 const CYCLE_TIME: Duration = Duration::from_secs(1);
-#[tokio::main]
-async fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let service_name = ServiceName::new("My/Funk/ServiceName")?;
 
-    let service = zero_copy::Service::new(&service_name)
-        .publish_subscribe()
-        .open_or_create::<TransmissionData>()?;
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let node = NodeBuilder::new().create::<ipc::Service>()?;
 
-    let subscriber = service.subscriber().create()?;
+    let service = node
+        .service_builder(&"My/Funk/ServiceName".try_into()?)
+        .publish_subscribe::<TransmissionData>()
+        .open_or_create()?;
 
-    while let Iox2Event::Tick = Iox2::wait(CYCLE_TIME) {
+    let subscriber = service.subscriber_builder().create()?;
+
+    while let NodeEvent::Tick = node.wait(CYCLE_TIME) {
         while let Some(sample) = subscriber.receive()? {
             println!("received: {:?}", *sample);
         }
     }
 
-    println!("exit ...");
+    println!("exit");
 
     Ok(())
 }
