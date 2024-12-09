@@ -1,7 +1,8 @@
-use log::{debug, error, info, trace, warn};
+// use log::{debug, error, info, trace, warn};
+use log::info;
 use log4rs;
 
-use base64::{Engine as _, engine::{self, general_purpose}, alphabet};
+use base64::{Engine as _, engine::general_purpose};
 fn main() {
   log4rs::init_file("examples/config/log.yaml", Default::default()).unwrap();
 
