@@ -66,10 +66,7 @@ c++ app,test ok ,can link with rust zenoh,check:
 
 ### iceoryx2
 
-pub and sub  ,test ok ,
-
-⚠️ but not c++ and python app,now are planning,waiting for  release
-
+pub and sub  ,test ok 
 ### quiche
 
 ```sh
