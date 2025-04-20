@@ -1,8 +1,8 @@
 [package]
 name = "easy_example"
-version = "0.4.3"
+version = "0.4.4"
 authors = ["youngday"]
-edition = "2021"
+edition = "2024"
 
 [features]
 default = ["log", "platform-verifier", "ring", "runtime-tokio", "rustls"]
@@ -25,8 +25,8 @@ log = "0.4"
 log4rs = { version = "1.3", features = ["toml", "json_encoder"] }
 pretty_env_logger ="0.5"
 config = "0.15"
-once_cell = { version = "1.19.0" }
-bytes = "1.9"
+once_cell = { version = "1.21" }
+bytes = "1.10"
 assert2 = "0.3"
 trybuild = "1.0"
 criterion = "0.5"
@@ -36,13 +36,13 @@ anyhow = "1.0"
 serde = { version = "1.0", features = ["derive"] }
 serde_derive = "1.0"
 serde_yaml = "0.9"
-tokio = { version = "1.42", features = ["full", "macros","tracing"] }
+tokio = { version = "1.44", features = ["full", "macros","tracing"] }
 tokio-rustls = "0.26"
-rustls-pemfile = "2.0"
+rustls-pemfile = "2.2"
 # tokio = { version = "1.38", features = ["rt-multi-thread", "time", "fs", "macros", "net"] }
 tokio-stream = { version =  "0.1", features = ["net"] }
 tokio-util = { version = "0.7", features = ["full"] }
-tokio-serial = "5.4.4"
+tokio-serial = "5.4.5"
 reqwest = { version = "0.12", features = ["json"] }
 futures = { version = "0.3", default-features = false, features = ["alloc"] }
 futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
@@ -58,29 +58,19 @@ rand = "0.9"
 rand_distr = "0.5"
 itertools = "0.14"
 csv = "1.3"
-image = "0.25.1" 
+image = "0.25" 
 
 iceoryx2 ="0.5"
 iceoryx2-bb-container = "0.5"
 
-#zenoh+++++
-clap = { version="4.5", features = ["derive"] }
-env_logger = "0.11"
-flume = "0.11"
-git-version = "0.3"
-json5 = "0.4"
-zenoh = "0.11.0"
-zenoh-ext = "0.11.0"
-zenoh-util="0.11.0"
-#zenoh------
 
 # network
 hyper = { version = "1", features = ["http1", "server", "client"] }
-hyper-util = { version = "0.1.0", features = ["tokio"] }
-http-body-util = { version = "0.1.0" }
+hyper-util = { version = "0.1", features = ["tokio"] }
+http-body-util = { version = "0.1" }
 axum = { version="0.8" }
 axum-extra = { version="0.10", features = ["typed-header"] }
-poem="3.0"
+poem="3.1"
 webpki-roots = "0.26"
 
 
@@ -95,8 +85,8 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 fastwebsockets = { version = "0.10", features = ["upgrade"] }
 
 # quiche++++++++++++++++++++++++++++++++++++++++++++
-async-io = { version = "2.3", optional = true }
-async-std = { version = "1.12", optional = true }
+async-io = { version = "2.4", optional = true }
+async-std = { version = "1.13.1", optional = true }
 # Enables futures::io::{AsyncRead, AsyncWrite} support for streams
 futures-io = { version = "0.3", optional = true }
 rustc-hash = "2.1"
@@ -130,14 +120,6 @@ url = "2.5"
 
 [build-dependencies]
 poem-grpc-build="0.5"
-
-# zenoh publish_subscribe
-[[example]]
-name = "zenoh_pub"
-path = "examples/dds_zenoh/z_pub.rs"
-[[example]]
-name = "zenoh_sub"
-path = "examples/dds_zenoh/z_sub.rs"
 
 # iceoryx2 publish_subscribe
 [[example]]

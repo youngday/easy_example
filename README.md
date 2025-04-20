@@ -1,7 +1,7 @@
 # easy_example
 
 * rust base frame:log , config ,network,zeromq ,mqtt,web,rpc ,base64 
-* dds: zenoh, iceoryx2
+* dds:  iceoryx2
 
 ## crate
 
@@ -16,7 +16,6 @@
 |tokio-serial|serial.rs|async serial port||
 |base64||base64|encode decode|
 |plot|plotly|plot data all you want|plot to web,easy than plotters,(https://github.com/youngday/easy_wasm_plotly)|
-|zenoh|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
 |iceoryx2|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
 |poem_grpc| |tonic grpc   |put ./proto build.rs files same as cargo.toml path |
 |axum websocket| |websocket   | axum example ,tokio-tungstenite |
@@ -36,7 +35,6 @@
 |serial-print|async serial port||
 |base64|base64|encode decode|
 |plot|plot data|https://github.com/youngday/easy_wasm_plotly |
-|zenoh_pub,zenoh_sub|pub sub|pub sub|
 |ice_pub,ice_sub|pub sub|pub sub|
 |discovery|iceoryx2 discovery| |
 |grpc-client,grpc-server,grpc-jsoncodec-server|poem grpc examples ,with json codec |⚠️ grpc branch   |
@@ -54,15 +52,6 @@ https://code.visualstudio.com/docs/languages/rust
 
 zeromq is a good dds rpc, but rust zmq is maintained slowly.
 we could have more fast dds selection,and it can bind to ros.
-
-### easy-zenoh
-
-pub and sub ,test ok
-
-#### zenoh-cpp 
-
-c++ app,test ok ,can link with rust zenoh,check:
-
 
 ### iceoryx2
 
