@@ -1,6 +1,6 @@
 [package]
 name = "easy_example"
-version = "0.4.5"
+version = "0.4.6"
 authors = ["youngday"]
 edition = "2024"
 
@@ -29,17 +29,16 @@ once_cell = { version = "1.21" }
 bytes = "1.10"
 assert2 = "0.3"
 trybuild = "1.0"
-criterion = "0.6"
+criterion = "0.7"
 anyhow = "1.0"
 
 
 serde = { version = "1.0", features = ["derive"] }
 serde_derive = "1.0"
 serde_yaml = "0.9"
-tokio = { version = "1.44", features = ["full", "macros","tracing"] }
+tokio = { version = "1.47", features = ["full", "macros","tracing"] }
 tokio-rustls = "0.26"
 rustls-pemfile = "2.2"
-# tokio = { version = "1.38", features = ["rt-multi-thread", "time", "fs", "macros", "net"] }
 tokio-stream = { version =  "0.1", features = ["net"] }
 tokio-util = { version = "0.7", features = ["full"] }
 tokio-serial = "5.4.5"
@@ -65,13 +64,13 @@ iceoryx2-bb-container = "0.6"
 
 
 # network
-hyper = { version = "1", features = ["http1", "server", "client"] }
+hyper = { version = "1.6", features = ["http1", "server", "client"] }
 hyper-util = { version = "0.1", features = ["tokio"] }
 http-body-util = { version = "0.1" }
 axum = { version="0.8" }
 axum-extra = { version="0.10", features = ["typed-header"] }
 poem="3.1"
-webpki-roots = "1.0.1"
+webpki-roots = "1.0"
 
 
 
@@ -85,7 +84,7 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 fastwebsockets = { version = "0.10", features = ["upgrade"] }
 
 # quiche++++++++++++++++++++++++++++++++++++++++++++
-async-io = { version = "2.4", optional = true }
+async-io = { version = "2.5", optional = true }
 async-std = { version = "1.13.1", optional = true }
 # Enables futures::io::{AsyncRead, AsyncWrite} support for streams
 futures-io = { version = "0.3", optional = true }

@@ -81,6 +81,30 @@ cargo run --release --example rumqttd -- -c rumqttd.toml -vvv
 ```
 or ./rumqtt.sh
 
-## 
+## examples
+
+    base64
+    discovery
+    ice_pub
+    ice_sub
+    load_csv
+    mpsc_std
+    mpsc_tokio
+    mqtt_asyncpubsub
+    post
+    quic_client
+    quic_server
+    rumqttd
+    serial-print
+    tcp-client
+    tcp-server
+    udp-client
+    udp-echo
+    ws_autobahn_client
+    ws_server
+    zeromq_tmq
+    zmq_pub
+    zmq_sub
+
 
 
