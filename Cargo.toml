@@ -23,6 +23,7 @@ log = ["tracing/log", "proto/log", "udp/log"]
 [dependencies]
 log = "0.4"
 log4rs = { version = "1.3", features = ["toml", "json_encoder"] }
+env_logger = "0.11"
 pretty_env_logger ="0.5"
 config = "0.15"
 once_cell = { version = "1.21" }
@@ -99,17 +100,19 @@ thiserror = "2.0"
 udp = { package = "quinn-udp",  version = "0.5", default-features = false }
 #quiche----------------------------------------------
 
+tokio-tungstenite = "0.27"
+tungstenite = "0.27"
 
 
 
 [dev-dependencies]
 # quiche++++++++++++++++++++++++++++++++++++++++++++
-crc = "3.2"
+crc = "3.3"
 bencher = "0.1"
 directories-next = "2.0"
 rand = "0.9"
 rcgen = "0.14"
-rustls-pemfile = "2.1"
+rustls-pemfile = "2.2"
 clap = { version = "4.5", features = ["derive"] }
 # tokio = { version = "1.38", features = ["rt", "rt-multi-thread", "time", "macros", "sync"] }
 tracing-subscriber = { version = "0.3", default-features = false, features = ["env-filter", "fmt", "ansi", "time", "local-time"] }
@@ -142,11 +145,11 @@ name = "zeromq_tmq"
 path = "examples/zeromq_tmq/zeromq_tmq.rs"
 # websocket
 [[example]]
-name = "ws_server"
-path = "examples/fastwebsockets/server.rs"
+name = "ws-server"
+path = "examples/websocket/autobahn-server.rs"
 [[example]]
-name = "ws_autobahn_client"
-path = "examples/fastwebsockets/autobahn_client.rs"
+name = "ws-client"
+path = "examples/websocket/autobahn-client.rs"
 
 [[example]]
 name = "quic_client"
