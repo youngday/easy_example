@@ -80,6 +80,14 @@ run rumqttd broker first
 cargo run --release --example rumqttd -- -c rumqttd.toml -vvv 
 ```
 or ./rumqtt.sh
+## webtransport
+please check examples/webtransport/src/README.md
+and 
+
+-   Generate a certificate: `./cert/generate`
+-   Run the Rust server: `cargo run --example wt-server -- --tls-cert cert/localhost.crt --tls-key cert/localhost.key`
+-   Run the Rust client: `cargo run --example wt-client -- --tls-cert cert/localhost.crt`
+-   Run a Web client: `cd web; npm install; npx parcel serve client.html --open`
 
 ## examples
 
