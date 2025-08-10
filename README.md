@@ -100,8 +100,8 @@ or ./rumqtt.sh
     tcp-server
     udp-client
     udp-echo
-    ws_autobahn_client
-    ws_server
+    ws-client
+    ws-server
     zeromq_tmq
     zmq_pub
     zmq_sub

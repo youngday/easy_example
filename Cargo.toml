@@ -68,8 +68,9 @@ iceoryx2-bb-container = "0.6"
 hyper = { version = "1.6", features = ["http1", "server", "client"] }
 hyper-util = { version = "0.1", features = ["tokio"] }
 http-body-util = { version = "0.1" }
-axum = { version="0.8" }
+axum = { version="0.8", features = ["ws"] }
 axum-extra = { version="0.10", features = ["typed-header"] }
+
 poem="3.1"
 webpki-roots = "1.0"
 
@@ -146,10 +147,10 @@ path = "examples/zeromq_tmq/zeromq_tmq.rs"
 # websocket
 [[example]]
 name = "ws-server"
-path = "examples/websocket/autobahn-server.rs"
+path = "examples/websocket/src/main.rs"
 [[example]]
 name = "ws-client"
-path = "examples/websocket/autobahn-client.rs"
+path = "examples/websocket/src/client.rs"
 
 [[example]]
 name = "quic_client"
