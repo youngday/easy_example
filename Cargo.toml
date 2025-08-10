@@ -151,6 +151,13 @@ path = "examples/websocket/src/main.rs"
 [[example]]
 name = "ws-client"
 path = "examples/websocket/src/client.rs"
+# websocket transport
+[[example]]
+name = "wt-server"
+path = "examples/webtransport/src/main.rs"
+[[example]]
+name = "wt-client"
+path = "examples/webtransport/src/client.rs"
 
 [[example]]
 name = "quic_client"
