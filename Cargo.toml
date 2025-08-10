@@ -162,14 +162,6 @@ name = "wt-client"
 path = "examples/webtransport/src/echo-client.rs"
 
 [[example]]
-name = "quic_client"
-path = "examples/quic/client.rs"
-
-[[example]]
-name = "quic_server"
-path = "examples/quic/server.rs"
-
-[[example]]
 name = "mqtt_asyncpubsub"
 path = "examples/mqtt/mqtt_asyncpubsub.rs"
 
