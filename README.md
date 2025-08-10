@@ -39,6 +39,7 @@
 |discovery|iceoryx2 discovery| |
 |grpc-client,grpc-server,grpc-jsoncodec-server|poem grpc examples ,with json codec |⚠️ grpc branch   |
 |ws_client,ws_server| | websocket   |
+|wt-server,wt-client|webtransport|replace websocket with http3/quic|
 |quic_server,quic_client|quic,http3|quic,http3|
 ## vscode build
 
