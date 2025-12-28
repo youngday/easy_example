@@ -1,9 +1,55 @@
-use std::{fs, io, path};
+use std::{fs, io, path, sync::Arc};
 
 use anyhow::Context;
 use clap::Parser;
-use rustls::pki_types::CertificateDer;
+use rustls::pki_types::{CertificateDer, ServerName, UnixTime};
+use rustls::{
+    client::danger::{HandshakeSignatureValid, ServerCertVerified, ServerCertVerifier},
+    crypto::aws_lc_rs,
+};
 use url::Url;
+
+// Custom certificate verifier that doesn't verify certificates
+#[derive(Debug)]
+struct NoCertificateVerification;
+
+impl ServerCertVerifier for NoCertificateVerification {
+    fn verify_server_cert(
+        &self,
+        _end_entity: &CertificateDer,
+        _intermediates: &[CertificateDer],
+        _server_name: &ServerName,
+        _ocsp_response: &[u8],
+        _now: UnixTime,
+    ) -> Result<ServerCertVerified, rustls::Error> {
+        // Always accept the certificate
+        Ok(ServerCertVerified::assertion())
+    }
+
+    fn verify_tls12_signature(
+        &self,
+        _message: &[u8],
+        _cert: &CertificateDer,
+        _dss: &rustls::DigitallySignedStruct,
+    ) -> Result<HandshakeSignatureValid, rustls::Error> {
+        Ok(HandshakeSignatureValid::assertion())
+    }
+
+    fn verify_tls13_signature(
+        &self,
+        _message: &[u8],
+        _cert: &CertificateDer,
+        _dss: &rustls::DigitallySignedStruct,
+    ) -> Result<HandshakeSignatureValid, rustls::Error> {
+        Ok(HandshakeSignatureValid::assertion())
+    }
+
+    fn supported_verify_schemes(&self) -> Vec<rustls::SignatureScheme> {
+        aws_lc_rs::default_provider()
+            .signature_verification_algorithms
+            .supported_schemes()
+    }
+}
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -28,13 +74,24 @@ async fn main() -> anyhow::Result<()> {
 
     let args = Args::parse();
 
-    let client = web_transport_quinn::ClientBuilder::new();
-
     let client = if args.tls_disable_verify {
         log::warn!("disabling TLS certificate verification; a MITM attack is possible");
 
-        // Accept any certificate.
-        unsafe { client.with_no_certificate_verification()? }
+        // Create a custom TLS configuration that doesn't verify certificates
+        let mut config = rustls::ClientConfig::builder_with_provider(Arc::new(
+            rustls::crypto::aws_lc_rs::default_provider(),
+        ))
+        .with_protocol_versions(&[&rustls::version::TLS13])?
+        .dangerous()
+        .with_custom_certificate_verifier(Arc::new(NoCertificateVerification))
+        .with_no_client_auth();
+        config.alpn_protocols = vec![web_transport_quinn::ALPN.as_bytes().to_vec()];
+
+        let config: quinn::crypto::rustls::QuicClientConfig = config.try_into()?;
+        let config = quinn::ClientConfig::new(Arc::new(config));
+
+        let client = quinn::Endpoint::client("[::]:0".parse()?)?;
+        web_transport_quinn::Client::new(client, config)
     } else if let Some(path) = &args.tls_cert {
         // Read the PEM certificate chain
         let chain = fs::File::open(path).context("failed to open cert file")?;
@@ -46,11 +103,12 @@ async fn main() -> anyhow::Result<()> {
 
         anyhow::ensure!(!chain.is_empty(), "could not find certificate");
 
-        // Only accept these certificates.
-        // Also available: with_server_certificate_hashes
+        // Create a client builder with custom certificates
+        let client = web_transport_quinn::ClientBuilder::new();
         client.with_server_certificates(chain)?
     } else {
         // Accept any certificate that matches a system root.
+        let client = web_transport_quinn::ClientBuilder::new();
         client.with_system_roots()?
     };
 

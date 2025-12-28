@@ -39,7 +39,7 @@
 |discovery|iceoryx2 discovery| |
 |grpc-client,grpc-server,grpc-jsoncodec-server|poem grpc examples ,with json codec |⚠️ grpc branch   |
 |ws_client,ws_server| | websocket   |
-|wt-server,wt-client|webtransport|replace websocket with http3/quic|
+|wt_server,wt_client|webtransport|replace websocket with http3/quic|
 ## vscode build
 
 https://code.visualstudio.com/docs/languages/rust
@@ -74,7 +74,13 @@ for building proto  not work on github workflow,
 
 mqtt update to v5 protocol
 
-run rumqttd broker first 
+```sh
+cargo run --example rumqttd
+```
+pub and sub
+```sh
+cargo run --example mqtt_asyncpubsub
+```
 
 ```sh
 cargo run --release --example rumqttd -- -c rumqttd.toml -vvv 
@@ -84,10 +90,22 @@ or ./rumqtt.sh
 please check examples/webtransport/src/README.md
 and 
 
--   Generate a certificate: `./cert/generate`
--   Run the Rust server: `cargo run --example wt-server -- --tls-cert cert/localhost.crt --tls-key cert/localhost.key`
--   Run the Rust client: `cargo run --example wt-client -- --tls-cert cert/localhost.crt`
--   Run a Web client: `cd web; npm install; npx parcel serve client.html --open`
+-   Generate a certificate: 
+```sh
+./cert/generate
+```
+-   Run the Rust server: 
+```sh
+cargo run --example wt_server -- --tls-cert cert/localhost.crt --tls-key cert/localhost.key
+```
+-   Run the Rust client: 
+```sh
+cargo run --example wt_client -- --tls-cert cert/localhost.crt
+```
+-   Run a Web client: 
+```sh
+cd web; npm install; npx parcel serve client.html --open
+```
 
 ## examples
 
@@ -96,21 +114,17 @@ and
     ice_pub
     ice_sub
     load_csv
-    mpsc_std
     mpsc_tokio
     mqtt_asyncpubsub
     post
     rumqttd
     serial-print
-    tcp-client
-    tcp-server
-    udp-client
-    udp-echo
-    ws-client
-    ws-server
+    tcp_client
+    tcp_server
+    udp_client
+    udp_echo
+    ws_client
+    ws_server
     zeromq_tmq
     zmq_pub
     zmq_sub
-
-
-

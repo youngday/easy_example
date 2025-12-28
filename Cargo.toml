@@ -1,6 +1,6 @@
 [package]
 name = "easy_example"
-version = "0.4.6"
+version = "0.4.7"
 authors = ["youngday"]
 edition = "2024"
 
@@ -14,7 +14,7 @@ rustls = ["dep:rustls", "proto/rustls", "proto/ring"]
 # Enables `Endpoint::client` and `Endpoint::server` conveniences
 ring = ["proto/ring"]
 runtime-tokio = ["tokio/time", "tokio/rt", "tokio/net"]
-runtime-async-std = ["async-io", "async-std"]
+# runtime-async-std = ["async-io", "async-std"]
 runtime-smol = ["async-io", "smol"]
 
 # Write logs via the `log` crate when no `tracing` subscriber exists
@@ -22,54 +22,54 @@ log = ["tracing/log", "proto/log", "udp/log"]
 
 [dependencies]
 log = "0.4"
-log4rs = { version = "1.3", features = ["toml", "json_encoder"] }
+log4rs = { version = "1.4", features = ["toml", "json_encoder"] }
 env_logger = "0.11"
 pretty_env_logger ="0.5"
 config = "0.15"
 once_cell = { version = "1.21" }
-bytes = "1.10"
+bytes = "1.11"
 assert2 = "0.3"
 trybuild = "1.0"
-criterion = "0.7"
+criterion = "0.8"
 anyhow = "1.0"
 
 
 serde = { version = "1.0", features = ["derive"] }
 serde_derive = "1.0"
 serde_yaml = "0.9"
-tokio = { version = "1.47", features = ["full", "macros","tracing"] }
+tokio = { version = "1.48", features = ["full", "macros","tracing"] }
 tokio-rustls = "0.26"
 rustls-pemfile = "2.2"
 tokio-stream = { version =  "0.1", features = ["net"] }
 tokio-util = { version = "0.7", features = ["full"] }
 tokio-serial = "5.4.5"
-reqwest = { version = "0.12", features = ["json"] }
+reqwest = { version = "0.13.0-rc.1", features = ["json"] }
 futures = { version = "0.3", default-features = false, features = ["alloc"] }
 futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
 
 tmq = { version = "0.5" }
 
-rumqttc = "0.24"
-rumqttd="0.19"
+rumqttc = "0.25"
+rumqttd="0.20"
 base64 = "0.22"
 
-ndarray = "0.16"
+ndarray = "0.17"
 rand = "0.9"
 rand_distr = "0.5"
 itertools = "0.14"
-csv = "1.3"
-image = "0.25" 
+csv = "1.4"
+image = "0.25"
 
-iceoryx2 ="0.6"
-iceoryx2-bb-container = "0.6"
+iceoryx2 ="0.8"
+iceoryx2-bb-container = "0.8"
 
 
 # network
-hyper = { version = "1.6", features = ["http1", "server", "client"] }
+hyper = { version = "1.8", features = ["http1", "server", "client"] }
 hyper-util = { version = "0.1", features = ["tokio"] }
 http-body-util = { version = "0.1" }
 axum = { version="0.8", features = ["ws"] }
-axum-extra = { version="0.10", features = ["typed-header"] }
+axum-extra = { version="0.12", features = ["typed-header"] }
 
 poem="3.1"
 webpki-roots = "1.0"
@@ -86,8 +86,8 @@ tracing-subscriber = { version = "0.3", features = ["env-filter"] }
 fastwebsockets = { version = "0.10", features = ["upgrade"] }
 
 # quiche++++++++++++++++++++++++++++++++++++++++++++
-async-io = { version = "2.5", optional = true }
-async-std = { version = "1.13.1", optional = true }
+async-io = { version = "2.6", optional = true }
+# async-std = { version = "1.13.2", optional = true }
 # Enables futures::io::{AsyncRead, AsyncWrite} support for streams
 futures-io = { version = "0.3", optional = true }
 rustc-hash = "2.1"
@@ -101,27 +101,26 @@ thiserror = "2.0"
 udp = { package = "quinn-udp",  version = "0.5", default-features = false }
 #quiche----------------------------------------------
 
-tokio-tungstenite = "0.27"
-tungstenite = "0.27"
+tokio-tungstenite = "0.28"
+tungstenite = "0.28"
 
 
 
 [dev-dependencies]
 # quiche++++++++++++++++++++++++++++++++++++++++++++
-crc = "3.3"
+crc = "3.4"
 bencher = "0.1"
 directories-next = "2.0"
 rand = "0.9"
 rcgen = "0.14"
 rustls-pemfile = "2.2"
 clap = { version = "4.5", features = ["derive"] }
-# tokio = { version = "1.38", features = ["rt", "rt-multi-thread", "time", "macros", "sync"] }
 tracing-subscriber = { version = "0.3", default-features = false, features = ["env-filter", "fmt", "ansi", "time", "local-time"] }
 tracing-futures = { version = "0.2", default-features = false, features = ["std-future"] }
 url = "2.5"
 #quiche----------------------------------------------
 
-web-transport-quinn="0.7.3"
+web-transport-quinn="0.10"
 
 [build-dependencies]
 poem-grpc-build="0.5"
@@ -148,17 +147,17 @@ name = "zeromq_tmq"
 path = "examples/zeromq_tmq/zeromq_tmq.rs"
 # websocket
 [[example]]
-name = "ws-server"
+name = "ws_server"
 path = "examples/websocket/src/main.rs"
 [[example]]
-name = "ws-client"
+name = "ws_client"
 path = "examples/websocket/src/client.rs"
 # websocket transport
 [[example]]
-name = "wt-server"
+name = "wt_server"
 path = "examples/webtransport/src/echo-server.rs"
 [[example]]
-name = "wt-client"
+name = "wt_client"
 path = "examples/webtransport/src/echo-client.rs"
 
 [[example]]
