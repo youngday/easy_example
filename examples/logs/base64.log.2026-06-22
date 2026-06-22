@@ -1,0 +1,36 @@
+{"timestamp":"2026-06-22T14:51:14.685641Z","level":"INFO","fields":{"message":"Base64 testing."},"target":"base64"}
+{"timestamp":"2026-06-22T14:51:14.685756Z","level":"INFO","fields":{"message":"这是 info 日志"},"target":"base64"}
+{"timestamp":"2026-06-22T14:51:14.685813Z","level":"WARN","fields":{"message":"这是 warn 日志"},"target":"base64"}
+{"timestamp":"2026-06-22T14:51:14.685869Z","level":"INFO","fields":{"message":"原始字节","bytes":"[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]"},"target":"base64"}
+{"timestamp":"2026-06-22T14:51:14.685949Z","level":"INFO","fields":{"message":"Base64 字符串","base64":"aGVsbG8gd29ybGQ="},"target":"base64"}
+{"timestamp":"2026-06-22T14:51:14.686131Z","level":"INFO","fields":{"message":"encoding","len":11},"target":"base64","span":{"data":"[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]","name":"do_encode"},"spans":[{"data":"[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]","name":"do_encode"}]}
+{"timestamp":"2026-06-22T14:51:14.686309Z","level":"INFO","fields":{"message":"encode 结果","encoded":"aGVsbG8gd29ybGQ="},"target":"base64"}
+{"timestamp":"2026-06-22T14:51:14.686408Z","level":"INFO","fields":{"message":"decoding","len":16},"target":"base64","span":{"b64":"aGVsbG8gd29ybGQ=","name":"do_decode"},"spans":[{"b64":"aGVsbG8gd29ybGQ=","name":"do_decode"}]}
+{"timestamp":"2026-06-22T14:51:14.686522Z","level":"INFO","fields":{"message":"decode 结果","decoded":"[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]"},"target":"base64"}
+{"timestamp":"2026-06-22T14:54:25.949084Z","level":"INFO","fields":{"message":"Base64 testing."},"target":"base64"}
+{"timestamp":"2026-06-22T14:54:25.949186Z","level":"INFO","fields":{"message":"这是 info 日志"},"target":"base64"}
+{"timestamp":"2026-06-22T14:54:25.949235Z","level":"WARN","fields":{"message":"这是 warn 日志"},"target":"base64"}
+{"timestamp":"2026-06-22T14:54:25.949284Z","level":"INFO","fields":{"message":"原始字节","bytes":"[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]"},"target":"base64"}
+{"timestamp":"2026-06-22T14:54:25.949343Z","level":"INFO","fields":{"message":"Base64 字符串","base64":"aGVsbG8gd29ybGQ="},"target":"base64"}
+{"timestamp":"2026-06-22T14:54:25.949509Z","level":"INFO","fields":{"message":"encoding","len":11},"target":"base64","span":{"data":"[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]","name":"do_encode"},"spans":[{"data":"[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]","name":"do_encode"}]}
+{"timestamp":"2026-06-22T14:54:25.949656Z","level":"INFO","fields":{"message":"encode 结果","encoded":"aGVsbG8gd29ybGQ="},"target":"base64"}
+{"timestamp":"2026-06-22T14:54:25.949747Z","level":"INFO","fields":{"message":"decoding","len":16},"target":"base64","span":{"b64":"aGVsbG8gd29ybGQ=","name":"do_decode"},"spans":[{"b64":"aGVsbG8gd29ybGQ=","name":"do_decode"}]}
+{"timestamp":"2026-06-22T14:54:25.949853Z","level":"INFO","fields":{"message":"decode 结果","decoded":"[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]"},"target":"base64"}
+{"timestamp":"2026-06-22T15:07:53.617244Z","level":"INFO","fields":{"message":"Base64 testing."},"target":"base64"}
+{"timestamp":"2026-06-22T15:07:53.617345Z","level":"INFO","fields":{"message":"这是 info 日志"},"target":"base64"}
+{"timestamp":"2026-06-22T15:07:53.617398Z","level":"WARN","fields":{"message":"这是 warn 日志"},"target":"base64"}
+{"timestamp":"2026-06-22T15:07:53.617451Z","level":"INFO","fields":{"message":"原始字节","bytes":"[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]"},"target":"base64"}
+{"timestamp":"2026-06-22T15:07:53.617514Z","level":"INFO","fields":{"message":"Base64 字符串","base64":"aGVsbG8gd29ybGQ="},"target":"base64"}
+{"timestamp":"2026-06-22T15:07:53.617683Z","level":"INFO","fields":{"message":"encoding","len":11},"target":"base64","span":{"data":"[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]","name":"do_encode"},"spans":[{"data":"[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]","name":"do_encode"}]}
+{"timestamp":"2026-06-22T15:07:53.617832Z","level":"INFO","fields":{"message":"encode 结果","encoded":"aGVsbG8gd29ybGQ="},"target":"base64"}
+{"timestamp":"2026-06-22T15:07:53.617959Z","level":"INFO","fields":{"message":"decoding","len":16},"target":"base64","span":{"b64":"aGVsbG8gd29ybGQ=","name":"do_decode"},"spans":[{"b64":"aGVsbG8gd29ybGQ=","name":"do_decode"}]}
+{"timestamp":"2026-06-22T15:07:53.618073Z","level":"INFO","fields":{"message":"decode 结果","decoded":"[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]"},"target":"base64"}
+{"timestamp":"2026-06-22T15:09:26.448488Z","level":"INFO","fields":{"message":"Base64 testing."},"target":"base64"}
+{"timestamp":"2026-06-22T15:09:26.448597Z","level":"INFO","fields":{"message":"这是 info 日志"},"target":"base64"}
+{"timestamp":"2026-06-22T15:09:26.448648Z","level":"WARN","fields":{"message":"这是 warn 日志"},"target":"base64"}
+{"timestamp":"2026-06-22T15:09:26.448706Z","level":"INFO","fields":{"message":"原始字节","bytes":"[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]"},"target":"base64"}
+{"timestamp":"2026-06-22T15:09:26.448769Z","level":"INFO","fields":{"message":"Base64 字符串","base64":"aGVsbG8gd29ybGQ="},"target":"base64"}
+{"timestamp":"2026-06-22T15:09:26.448941Z","level":"INFO","fields":{"message":"encoding","len":11},"target":"base64","span":{"data":"[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]","name":"do_encode"},"spans":[{"data":"[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]","name":"do_encode"}]}
+{"timestamp":"2026-06-22T15:09:26.449096Z","level":"INFO","fields":{"message":"encode 结果","encoded":"aGVsbG8gd29ybGQ="},"target":"base64"}
+{"timestamp":"2026-06-22T15:09:26.449189Z","level":"INFO","fields":{"message":"decoding","len":16},"target":"base64","span":{"b64":"aGVsbG8gd29ybGQ=","name":"do_decode"},"spans":[{"b64":"aGVsbG8gd29ybGQ=","name":"do_decode"}]}
+{"timestamp":"2026-06-22T15:09:26.449297Z","level":"INFO","fields":{"message":"decode 结果","decoded":"[104, 101, 108, 108, 111, 32, 119, 111, 114, 108, 100]"},"target":"base64"}

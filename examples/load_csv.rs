@@ -3,8 +3,8 @@
 use std::env;
 use std::path::PathBuf;
 use serde::Deserialize;
-use log::{debug, error, info, trace, warn};
-use log4rs;
+use tracing::{debug, error, info, trace, warn};
+use tracing_subscriber::{fmt, prelude::*, EnvFilter, Registry};
 
 #[derive(Deserialize)]
 #[allow(dead_code)]
@@ -39,14 +39,18 @@ fn load_apple_data() -> Vec<FinData> {
 }
 
 fn main() {
-    log4rs::init_file("examples/config/log.yaml", Default::default()).unwrap();
+    // tracing subscriber 初始化
+    let file_appender = tracing_appender::rolling::daily("examples/logs", "load_csv.log");
+    Registry::default()
+        .with(EnvFilter::from_default_env().add_directive("info".parse().unwrap()))
+        .with(fmt::layer().pretty().with_line_number(true))
+        .with(fmt::layer().json().with_writer(file_appender))
+        .init();
+
     let data = load_apple_data();
     let date: Vec<String> = data.iter().map(|d| d.date.clone()).collect();
     let high: Vec<f64> = data.iter().map(|d| d.high).collect();
 
-    println!("data:{:?}",data);
-    println!("high:{:?}",high);
-
-
-
+    info!("date count: {}", date.len());
+    info!("high first: {:?}", high.first());
 }

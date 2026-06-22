@@ -35,7 +35,7 @@ anyhow = "1.0.102"
 
 serde = { version = "1.0.228", features = ["derive"] }
 serde_derive = "1.0.228"
-serde_yaml = "0.9.34+deprecated"
+# serde_yaml = "0.9.34+deprecated"
 tokio = { version = "1.52.3", features = ["full", "macros", "tracing"] }
 tokio-rustls = "0.26.4"
 rustls-pemfile = "2.2.0"
@@ -81,9 +81,11 @@ headers = "0.4.1"
 
 tower = { version = "0.5.3", features = ["util"] }
 tower-http = { version = "0.7.0", features = ["fs", "trace"] }
-tracing = "0.1.44"
-tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
 
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json"] }
+tracing-appender = "0.2"    
+                                                # 如果需要写文件
 fastwebsockets = { version = "0.10.0", features = ["upgrade"] }
 
 # quinn++++++++++++++++++++++++++++++++++++++++++++

@@ -1,6 +1,5 @@
-// use log::{debug, error, info, trace, warn};
-use log::info;
-use log4rs;
+use tracing::info;
+use tracing_subscriber::{fmt, prelude::*, EnvFilter, Registry};
 use tokio::{task, time};
 
 use std::error::Error;
@@ -10,13 +9,16 @@ use rumqttc::v5::{AsyncClient, MqttOptions,mqttbytes::QoS};
 
 #[tokio::main(flavor = "current_thread")]
 async fn main() -> Result<(), Box<dyn Error>> {
-    // pretty_env_logger::init();
-    // color_backtrace::install();
+    // tracing subscriber 初始化
+    let file_appender = tracing_appender::rolling::daily("examples/logs", "mqtt_asyncpubsub.log");
+    Registry::default()
+        .with(EnvFilter::from_default_env().add_directive("info".parse().unwrap()))
+        .with(fmt::layer().pretty().with_line_number(true))
+        .with(fmt::layer().json().with_writer(file_appender))
+        .init();
 
-    log4rs::init_file("examples/config/log.yaml", Default::default()).unwrap();
     info!("log start:trace,debug,info,warn,error.");
    
-
     let mut mqttoptions = MqttOptions::new("test-1", "localhost", 1884);
     mqttoptions.set_keep_alive(Duration::from_secs(5));
 

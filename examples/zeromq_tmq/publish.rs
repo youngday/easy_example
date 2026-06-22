@@ -3,12 +3,19 @@ use tmq::{publish, Context, Result};
 use futures::SinkExt;
 use std::time::Duration;
 use tokio::time::sleep;
-use log::{debug, error, info, trace, warn};
-use log4rs;
+use tracing::{debug, error, info, trace, warn};
+use tracing_subscriber::{fmt, prelude::*, EnvFilter, Registry};
 
 #[tokio::main]
 async fn main() -> Result<()> {
-    log4rs::init_file("examples/config/log.yaml", Default::default()).unwrap();
+    // tracing subscriber 初始化
+    let file_appender = tracing_appender::rolling::daily("examples/logs", "zmq_pub.log");
+    Registry::default()
+        .with(EnvFilter::from_default_env().add_directive("info".parse().unwrap()))
+        .with(fmt::layer().pretty().with_line_number(true))
+        .with(fmt::layer().json().with_writer(file_appender))
+        .init();
+
     let version: String = "0.3.1102".to_string();
     trace!("some trace log");
     debug!("some debug log");
@@ -16,7 +23,7 @@ async fn main() -> Result<()> {
     warn!("some warning log");
     error!("some error log");
 
-    info!("version:{0}",version);
+    info!("version:{0}", version);
 
     let mut socket = publish(&Context::new()).bind("tcp://127.0.0.1:7899")?;
 

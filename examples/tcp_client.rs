@@ -1,9 +1,7 @@
-use log::{debug, error, info, trace, warn};
-use log4rs;
+use tracing::{debug, error, info, trace, warn};
+use tracing_subscriber::{fmt, prelude::*, EnvFilter, Registry};
 use easy_example::settings::Settings;
 use serde::{Deserialize, Serialize};
-
-
 
 use tokio::io::AsyncWriteExt;
 use tokio::net::TcpStream;
@@ -32,7 +30,14 @@ struct Data2 {
 
 #[tokio::main]
 pub async fn main() -> Result<(), Box<dyn Error>> {
-    log4rs::init_file("examples/config/log.yaml", Default::default()).unwrap();
+    // tracing subscriber 初始化
+    let file_appender = tracing_appender::rolling::daily("examples/logs", "tcp_client.log");
+    Registry::default()
+        .with(EnvFilter::from_default_env().add_directive("info".parse().unwrap()))
+        .with(fmt::layer().pretty().with_line_number(true))
+        .with(fmt::layer().json().with_writer(file_appender))
+        .init();
+
     trace!("some trace log");
     debug!("some debug log");
     info!("some information log");

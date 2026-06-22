@@ -1,7 +1,8 @@
-use log::{debug, error, info, trace, warn};
-use log4rs;
+use tracing::{debug, error, info, trace, warn};
+use tracing_subscriber::{fmt, prelude::*, EnvFilter, Registry};
 use serde::{Deserialize, Serialize};
 use easy_example::settings::Settings;
+
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 struct Application {
     application: Data,
@@ -30,7 +31,14 @@ struct Cat {
 
 #[tokio::main]
 async fn main() -> Result<(), reqwest::Error> {
-    log4rs::init_file("examples/config/log.yaml", Default::default()).unwrap();
+    // tracing subscriber 初始化
+    let file_appender = tracing_appender::rolling::daily("examples/logs", "post.log");
+    Registry::default()
+        .with(EnvFilter::from_default_env().add_directive("info".parse().unwrap()))
+        .with(fmt::layer().pretty().with_line_number(true))
+        .with(fmt::layer().json().with_writer(file_appender))
+        .init();
+
     trace!("some trace log");
     debug!("some debug log");
     info!("some information log");
@@ -50,7 +58,7 @@ async fn main() -> Result<(), reqwest::Error> {
     };
 
     let new_post: Cat = reqwest::Client::new()
-        //.post("https://jsonplaceholder.typicode.com/posts")
+        // .post("https://jsonplaceholder.typicode.com/posts")
         .post("http://127.0.0.1:8080/submit")
         .json(&new_post)
         .send()
