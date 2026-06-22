@@ -1,6 +1,6 @@
 [package]
 name = "easy_example"
-version = "0.4.7"
+version = "0.4.8"
 authors = ["youngday"]
 edition = "2024"
 
@@ -14,116 +14,127 @@ rustls = ["dep:rustls", "proto/rustls", "proto/ring"]
 # Enables `Endpoint::client` and `Endpoint::server` conveniences
 ring = ["proto/ring"]
 runtime-tokio = ["tokio/time", "tokio/rt", "tokio/net"]
-# runtime-async-std = ["async-io", "async-std"]
 runtime-smol = ["async-io", "smol"]
 
 # Write logs via the `log` crate when no `tracing` subscriber exists
 log = ["tracing/log", "proto/log", "udp/log"]
 
 [dependencies]
-log = "0.4"
-log4rs = { version = "1.4", features = ["toml", "json_encoder"] }
-env_logger = "0.11"
-pretty_env_logger ="0.5"
-config = "0.15"
-once_cell = { version = "1.21" }
-bytes = "1.11"
-assert2 = "0.3"
-trybuild = "1.0"
-criterion = "0.8"
-anyhow = "1.0"
+log = "0.4.33"
+log4rs = { version = "1.4.0", features = ["toml", "json_encoder"] }
+env_logger = "0.11.10"
+pretty_env_logger = "0.5.0"
+config = "0.15.24"
+once_cell = { version = "1.21.4" }
+bytes = "1.12.0"
+assert2 = "0.4.0"
+trybuild = "1.0.117"
+criterion = "0.8.2"
+anyhow = "1.0.102"
 
 
-serde = { version = "1.0", features = ["derive"] }
-serde_derive = "1.0"
-serde_yaml = "0.9"
-tokio = { version = "1.48", features = ["full", "macros","tracing"] }
-tokio-rustls = "0.26"
-rustls-pemfile = "2.2"
-tokio-stream = { version =  "0.1", features = ["net"] }
-tokio-util = { version = "0.7", features = ["full"] }
-tokio-serial = "5.4.5"
-reqwest = { version = "0.13.0-rc.1", features = ["json"] }
-futures = { version = "0.3", default-features = false, features = ["alloc"] }
-futures-util = { version = "0.3", default-features = false, features = ["sink", "std"] }
+serde = { version = "1.0.228", features = ["derive"] }
+serde_derive = "1.0.228"
+serde_yaml = "0.9.34+deprecated"
+tokio = { version = "1.52.3", features = ["full", "macros", "tracing"] }
+tokio-rustls = "0.26.4"
+rustls-pemfile = "2.2.0"
+tokio-stream = { version = "0.1.18", features = ["net"] }
+tokio-util = { version = "0.7.18", features = ["full"] }
+tokio-serial = "5.5.0"
+reqwest = { version = "0.13.4", features = ["json"] }
+futures = { version = "0.3.32", default-features = false, features = ["alloc"] }
+futures-util = { version = "0.3.32", default-features = false, features = [
+    "sink",
+    "std",
+] }
 
-tmq = { version = "0.5" }
+tmq = { version = "0.5.0" }
 
-rumqttc = "0.25"
-rumqttd="0.20"
-base64 = "0.22"
+rumqttc = "0.25.1"
+rumqttd = "0.20.0"
+base64 = "0.22.1"
 
-ndarray = "0.17"
-rand = "0.9"
-rand_distr = "0.5"
-itertools = "0.14"
-csv = "1.4"
-image = "0.25"
+ndarray = "0.17.2"
+rand = "0.10.1"
+rand_distr = "0.6.0"
+itertools = "0.15.0"
+csv = "1.4.0"
+image = "0.25.10"
 
-iceoryx2 ="0.8"
-iceoryx2-bb-container = "0.8"
+iceoryx2 = "0.9.2"
+iceoryx2-bb-container = "0.9.2"
 
 
 # network
-hyper = { version = "1.8", features = ["http1", "server", "client"] }
-hyper-util = { version = "0.1", features = ["tokio"] }
-http-body-util = { version = "0.1" }
-axum = { version="0.8", features = ["ws"] }
-axum-extra = { version="0.12", features = ["typed-header"] }
+hyper = { version = "1.10.1", features = ["http1", "server", "client"] }
+hyper-util = { version = "0.1.20", features = ["tokio"] }
+http-body-util = { version = "0.1.3" }
+axum = { version = "0.8.9", features = ["ws"] }
+axum-extra = { version = "0.12.6", features = ["typed-header"] }
 
-poem="3.1"
-webpki-roots = "1.0"
+poem = "3.1.12"
+webpki-roots = "1.0.8"
 
 
+headers = "0.4.1"
 
-headers = "0.4"
+tower = { version = "0.5.3", features = ["util"] }
+tower-http = { version = "0.7.0", features = ["fs", "trace"] }
+tracing = "0.1.44"
+tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
 
-tower = { version = "0.5", features = ["util"] }
-tower-http = { version = "0.6", features = ["fs", "trace"] }
-tracing = "0.1"
-tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+fastwebsockets = { version = "0.10.0", features = ["upgrade"] }
 
-fastwebsockets = { version = "0.10", features = ["upgrade"] }
-
-# quiche++++++++++++++++++++++++++++++++++++++++++++
-async-io = { version = "2.6", optional = true }
+# quinn++++++++++++++++++++++++++++++++++++++++++++
+async-io = { version = "2.6.0", optional = true }
 # async-std = { version = "1.13.2", optional = true }
 # Enables futures::io::{AsyncRead, AsyncWrite} support for streams
-futures-io = { version = "0.3", optional = true }
-rustc-hash = "2.1"
-pin-project-lite = "0.2"
-quinn="0.11"
-proto = { package = "quinn-proto",version = "0.11", default-features = false }
-protoc-rust = "2.28"
-rustls = { version = "0.23", default-features = true, features = ["ring", "std"], optional = true }
-smol = { version = "2.0", optional = true }
-thiserror = "2.0"
-udp = { package = "quinn-udp",  version = "0.5", default-features = false }
-#quiche----------------------------------------------
+futures-io = { version = "0.3.32", optional = true }
+rustc-hash = "2.1.2"
+pin-project-lite = "0.2.17"
+quinn = "0.11.11"
+proto = { package = "quinn-proto", version = "0.11.15", default-features = false }
+protoc-rust = "2.28.0"
+rustls = { version = "0.23.40", default-features = true, features = [
+    "ring",
+    "std",
+], optional = true }
+smol = { version = "2.0.2", optional = true }
+thiserror = "2.0.18"
+udp = { package = "quinn-udp", version = "0.6.1", default-features = false }
+#quinn----------------------------------------------
 
-tokio-tungstenite = "0.28"
-tungstenite = "0.28"
-
+tokio-tungstenite = "0.29.0"
+tungstenite = "0.29.0"
 
 
 [dev-dependencies]
-# quiche++++++++++++++++++++++++++++++++++++++++++++
-crc = "3.4"
-bencher = "0.1"
-directories-next = "2.0"
-rand = "0.9"
-rcgen = "0.14"
-rustls-pemfile = "2.2"
-clap = { version = "4.5", features = ["derive"] }
-tracing-subscriber = { version = "0.3", default-features = false, features = ["env-filter", "fmt", "ansi", "time", "local-time"] }
-tracing-futures = { version = "0.2", default-features = false, features = ["std-future"] }
-url = "2.5"
-#quiche----------------------------------------------
+# quinn++++++++++++++++++++++++++++++++++++++++++++
+crc = "3.4.0"
+bencher = "0.1.5"
+directories-next = "2.0.0"
+rand = "0.10.1"
+rcgen = "0.14.8"
+rustls-pemfile = "2.2.0"
+clap = { version = "4.6.1", features = ["derive"] }
+tracing-subscriber = { version = "0.3.23", default-features = false, features = [
+    "env-filter",
+    "fmt",
+    "ansi",
+    "time",
+    "local-time",
+] }
+tracing-futures = { version = "0.2.5", default-features = false, features = [
+    "std-future",
+] }
+url = "2.5.8"
+#quinn----------------------------------------------
 
-web-transport-quinn="0.10"
+web-transport-quinn = "0.11.9"
 
 [build-dependencies]
-poem-grpc-build="0.5"
+poem-grpc-build = "0.5.9"
 
 # iceoryx2 publish_subscribe
 [[example]]

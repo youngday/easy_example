@@ -14,7 +14,6 @@ rustup target add wasm32-unknown-unknown
 ```sh
 cargo install --locked trunk
 ```
-## trunk vs wasm-pack
 
 
 
