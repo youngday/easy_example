@@ -1,9 +1,9 @@
 use base64::{Engine as _, engine::general_purpose};
 
-use tracing::{info, debug, trace, warn, instrument};
-use tracing_subscriber::{fmt, prelude::*, EnvFilter, Registry};
+use tracing::{debug, info, instrument, trace, warn};
+use tracing_subscriber::{EnvFilter, Registry, fmt, prelude::*};
 
-#[instrument]  // 自动记录函数入参、返回值、耗时
+#[instrument] // 自动记录函数入参、返回值、耗时
 fn do_encode(data: &[u8]) -> String {
     info!(len = data.len(), "encoding");
     general_purpose::STANDARD.encode(data)
@@ -17,19 +17,18 @@ fn do_decode(b64: &str) -> Vec<u8> {
 
 fn main() {
     // 控制台 appender（带颜色、行号）
-    let console_layer = fmt::layer()
-        .pretty()
-        .with_line_number(true);
+    let console_layer = fmt::layer().pretty().with_line_number(true);
 
     // 文件 appender（JSON 格式，每天滚动）
     let file_appender = tracing_appender::rolling::daily("examples/logs", "base64.log");
     let file_layer = fmt::layer()
         .json()
-        .with_writer(file_appender);
+        .with_writer(file_appender)
+        .with_line_number(true);
 
     // 订阅：控制台 + 文件，可通过 RUST_LOG 环境变量覆盖级别
     Registry::default()
-        .with(EnvFilter::from_default_env().add_directive("info".parse().unwrap()))
+        .with(EnvFilter::from_default_env().add_directive("debug".parse().unwrap()))
         .with(console_layer)
         .with(file_layer)
         .init();
@@ -54,7 +53,6 @@ fn main() {
 
     let decoded = do_decode(b);
     info!(decoded = ?decoded, "decode 结果");
-
     // 断言
     assert_eq!(encoded, b);
     assert_eq!(a, decoded.as_slice());
