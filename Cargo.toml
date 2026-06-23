@@ -101,6 +101,7 @@ udp = { package = "quinn-udp", version = "0.6.1", default-features = false }
 
 tokio-tungstenite = "0.29.0"
 tungstenite = "0.29.0"
+serde_yaml = "0.9.34"
 
 
 [dev-dependencies]

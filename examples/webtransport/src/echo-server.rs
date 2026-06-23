@@ -76,7 +76,7 @@ async fn main() -> anyhow::Result<()> {
 }
 
 async fn run_conn(request: web_transport_quinn::Request) -> anyhow::Result<()> {
-    info!("received WebTransport request: {}", request.url());
+    info!("received WebTransport request: {}", request.url);
 
     // Accept the session.
     let session = request.ok().await.context("failed to accept session")?;
@@ -118,3 +118,4 @@ async fn run_session(session: Session) -> anyhow::Result<()> {
         info!("echo successful!");
     }
 }
+

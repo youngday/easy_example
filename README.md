@@ -8,12 +8,12 @@
 |name|replace|fun|note|
 |-|-|-|-|
 |tokio||async task ,tcp ,udp,channel,|async frame,tokio::spawn|
-|config.rs|yaml,toml,json,single file|read config files ,and put into struct data|simplize config function|
-|log4rs|env_logger|log with file||
+|config|yaml,toml,json,single file|read config files ,and put into struct data|simplize config function|
+|tracing|log4rs,env_logger|async log with file||
 |tmq||zeromq with tokio||
 |once_cell|lazy_static|global reference from config file||
 |rumqttc|paho-mqtt|mqtt of rust with tokio||
-|tokio-serial|serial.rs|async serial port||
+|tokio-serial|serial|async serial port||
 |base64||base64|encode decode|
 |plot|plotly|plot data all you want|plot to web,easy than plotters,(https://github.com/youngday/easy_wasm_plotly)|
 |iceoryx2|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
