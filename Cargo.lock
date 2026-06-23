@@ -1341,7 +1341,7 @@ checksum = "92773504d58c093f6de2459af4af33faa518c13451eb8f2b5698ed3d36e7c813"
 
 [[package]]
 name = "easy_example"
-version = "0.4.8"
+version = "0.5.0"
 dependencies = [
  "anyhow",
  "assert2",
@@ -3800,7 +3800,6 @@ checksum = "76150b617afc75e6e21ac5f39bc196e80b65415ae48d62dbef8e2519d040ce42"
 dependencies = [
  "cfg_aliases",
  "libc",
- "log",
  "socket2 0.6.4",
  "windows-sys 0.61.2",
 ]
