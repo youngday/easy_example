@@ -1,4 +1,8 @@
 # CHANGELOG
+
+## 0623,2026
+update crates,
+chang into log crate: tracing
 ## 0420,2025
 
 delete:zenoh 
