@@ -1,4 +1,4 @@
-use log::info;
+use tracing::info;
 use serde::Deserialize;
 
 use config::{Config, ConfigError, Environment, File};

@@ -5,7 +5,7 @@ authors = ["youngday"]
 edition = "2024"
 
 [features]
-default = ["log", "platform-verifier", "ring", "runtime-tokio", "rustls"]
+default = ["platform-verifier", "ring", "runtime-tokio", "rustls"]
 # Records how long locks are held, and warns if they are held >= 1ms
 lock_tracking = []
 # Provides `ClientConfig::with_platform_verifier()` convenience method
@@ -20,10 +20,6 @@ runtime-smol = ["async-io", "smol"]
 log = ["tracing/log", "proto/log", "udp/log"]
 
 [dependencies]
-log = "0.4.33"
-log4rs = { version = "1.4.0", features = ["toml", "json_encoder"] }
-env_logger = "0.11.10"
-pretty_env_logger = "0.5.0"
 config = "0.15.24"
 once_cell = { version = "1.21.4" }
 bytes = "1.12.0"

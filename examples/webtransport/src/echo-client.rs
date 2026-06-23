@@ -8,6 +8,8 @@ use rustls::{
     crypto::aws_lc_rs,
 };
 use url::Url;
+use tracing::{info, warn};
+use tracing_subscriber::{fmt, prelude::*, EnvFilter, Registry};
 
 // Custom certificate verifier that doesn't verify certificates
 #[derive(Debug)]
@@ -68,14 +70,18 @@ struct Args {
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    // Enable info logging.
-    let env = env_logger::Env::default().default_filter_or("info");
-    env_logger::init_from_env(env);
+    // Initialize tracing subscriber
+    let file_appender = tracing_appender::rolling::daily("examples/logs", "wt_client.log");
+    Registry::default()
+        .with(EnvFilter::from_default_env().add_directive("info".parse().unwrap()))
+        .with(fmt::layer().pretty().with_line_number(true))
+        .with(fmt::layer().json().with_writer(file_appender))
+        .init();
 
     let args = Args::parse();
 
     let client = if args.tls_disable_verify {
-        log::warn!("disabling TLS certificate verification; a MITM attack is possible");
+        warn!("disabling TLS certificate verification; a MITM attack is possible");
 
         // Create a custom TLS configuration that doesn't verify certificates
         let mut config = rustls::ClientConfig::builder_with_provider(Arc::new(
@@ -112,29 +118,29 @@ async fn main() -> anyhow::Result<()> {
         client.with_system_roots()?
     };
 
-    log::info!("connecting to {}", args.url);
+    info!("connecting to {}", args.url);
 
     // Connect to the given URL.
     let session = client.connect(args.url).await?;
 
-    log::info!("connected");
+    info!("connected");
 
     // Create a bidirectional stream.
     let (mut send, mut recv) = session.open_bi().await?;
 
-    log::info!("created stream");
+    info!("created stream");
 
     // Send a message.
     let msg = "hello world".to_string();
     send.write_all(msg.as_bytes()).await?;
-    log::info!("sent: {msg}");
+    info!("sent: {msg}");
 
     // Shut down the send stream.
     send.finish()?;
 
     // Read back the message.
     let msg = recv.read_to_end(1024).await?;
-    log::info!("recv: {}", String::from_utf8_lossy(&msg));
+    info!("recv: {}", String::from_utf8_lossy(&msg));
 
     Ok(())
 }

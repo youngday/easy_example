@@ -4,6 +4,8 @@ use anyhow::Context;
 use clap::Parser;
 use rustls::pki_types::CertificateDer;
 use url::Url;
+use tracing::info;
+use tracing_subscriber::{fmt, prelude::*, EnvFilter, Registry};
 
 #[derive(Parser, Debug)]
 #[command(author, version, about, long_about = None)]
@@ -18,9 +20,13 @@ struct Args {
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    // Enable info logging.
-    let env = env_logger::Env::default().default_filter_or("info");
-    env_logger::init_from_env(env);
+    // Initialize tracing subscriber
+    let file_appender = tracing_appender::rolling::daily("examples/logs", "wt_client_adv.log");
+    Registry::default()
+        .with(EnvFilter::from_default_env().add_directive("info".parse().unwrap()))
+        .with(fmt::layer().pretty().with_line_number(true))
+        .with(fmt::layer().json().with_writer(file_appender))
+        .init();
 
     let args = Args::parse();
 
@@ -54,27 +60,27 @@ async fn main() -> anyhow::Result<()> {
     let client = web_transport_quinn::Client::new(client, config);
 
     // Connect to the given URL.
-    log::info!("connecting to {}", args.url);
+    info!("connecting to {}", args.url);
     let session = client.connect(args.url).await?;
 
-    log::info!("connected");
+    info!("connected");
 
     // Create a bidirectional stream.
     let (mut send, mut recv) = session.open_bi().await?;
 
-    log::info!("created stream");
+    info!("created stream");
 
     // Send a message.
     let msg = "hello world".to_string();
     send.write_all(msg.as_bytes()).await?;
-    log::info!("sent: {msg}");
+    info!("sent: {msg}");
 
     // Shut down the send stream.
     send.finish()?;
 
     // Read back the message.
     let msg = recv.read_to_end(1024).await?;
-    log::info!("recv: {}", String::from_utf8_lossy(&msg));
+    info!("recv: {}", String::from_utf8_lossy(&msg));
 
     Ok(())
 }
