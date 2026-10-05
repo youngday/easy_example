@@ -16,8 +16,8 @@ use std::time::Duration;
 use easy_example::TransmissionData;
 
 const KEY_EXPR: &str = "demo/easy_example/transmission";
-const CYCLE_TIME: Duration = Duration::from_secs(1);
-
+// const CYCLE_TIME: Duration = Duration::from_secs(1);
+const CYCLE_TIME: Duration = Duration::from_millis(1);
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let session = zenoh::open(zenoh::Config::default()).await?;

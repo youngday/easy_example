@@ -19,7 +19,7 @@
 //! ```
 
 use std::{
-    sync::mpsc::{channel, Receiver, Sender},
+    sync::mpsc::{Receiver, Sender, channel},
     time::{Duration, Instant},
 };
 
