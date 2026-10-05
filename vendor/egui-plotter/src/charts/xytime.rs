@@ -36,27 +36,28 @@ fn pad_range(range: Range<f32>) -> Range<f32> {
     (range.start - delta)..(range.end + delta)
 }
 
-/// Cumulative X/Y ranges: entry `i` covers points `0..=i`.
-fn cumulative_ranges(points: &[(f32, f32)]) -> Vec<(Range<f32>, Range<f32>)> {
-    let mut ranges = Vec::with_capacity(points.len());
+/// X/Y ranges covering every point in `points`.
+///
+/// Both ranges are padded so that they are never empty, which plotters (and the
+/// playback slicing below) require. An empty slice yields the unit ranges.
+fn xy_range(points: &[(f32, f32)]) -> (Range<f32>, Range<f32>) {
+    let Some((&(first_x, first_y), rest)) = points.split_first() else {
+        return (0.0..1.0, 0.0..1.0);
+    };
 
-    let mut min_x: f32 = f32::MAX;
-    let mut min_y: f32 = f32::MAX;
-    let mut max_x: f32 = f32::MIN;
-    let mut max_y: f32 = f32::MIN;
+    let mut min_x = first_x;
+    let mut min_y = first_y;
+    let mut max_x = first_x;
+    let mut max_y = first_y;
 
-    for point in points {
-        let (x, y) = *point;
-
+    for &(x, y) in rest {
         min_x = min_x.min(x);
         min_y = min_y.min(y);
         max_x = max_x.max(x);
         max_y = max_y.max(y);
-
-        ranges.push((pad_range(min_x..max_x), pad_range(min_y..max_y)));
     }
 
-    ranges
+    (pad_range(min_x..max_x), pad_range(min_y..max_y))
 }
 
 #[derive(Clone)]
@@ -109,11 +110,14 @@ pub struct XyTimeData {
     playback_start: Option<Instant>,
     pause_start: Option<Instant>,
     playback_speed: f32,
-    points: Arc<[(f32, f32)]>,
-    ranges: Arc<[(Range<f32>, Range<f32>)]>,
-    times: Arc<[f32]>,
+    /// Stored points, ordered by `time`.
+    points: Vec<(f32, f32)>,
+    /// Time (seconds) of each stored point; parallel to `points`.
+    times: Vec<f32>,
     /// Maximum number of points kept; `None` means unbounded.
     window: Option<usize>,
+    /// Set when `points`/`times` change and the chart snapshot must be rebuilt.
+    snapshot_dirty: bool,
     chart: Chart<XyTimeConfig>,
 }
 
@@ -147,15 +151,10 @@ impl XyTimeData {
         y_unit: &str,
         caption: &str,
     ) -> Self {
-        // Ranges include the X range, Y range, and time in seconds
-        let ranges = cumulative_ranges(&points);
-
-        // Turn all the vecs and strings into arcs since they are more or less read-only at
-        // this point
-
-        let points: Arc<[(f32, f32)]> = points.into();
-        let ranges: Arc<[(Range<f32>, Range<f32>)]> = ranges.into();
-        let times: Arc<[f32]> = times.into();
+        // The chart configuration keeps an immutable snapshot of the points; the
+        // mutable copy stays in `Self` so that live appends stay cheap.
+        let range = xy_range(&points);
+        let snapshot: Arc<[(f32, f32)]> = points.clone().into();
 
         let x_unit: Arc<str> = x_unit.into();
         let y_unit: Arc<str> = y_unit.into();
@@ -189,8 +188,8 @@ impl XyTimeData {
         let text_color = BLACK.to_rgba();
 
         let config = XyTimeConfig {
-            points: points.clone(),
-            range: ranges.last().cloned().unwrap_or((0.0..1.0, 0.0..1.0)),
+            points: snapshot,
+            range,
             line_style,
             grid_style,
             subgrid_style,
@@ -269,14 +268,14 @@ impl XyTimeData {
                     .bold_line_style(data.grid_style)
                     .light_line_style(data.subgrid_style)
                     .axis_style(data.axes_style)
-                    .x_desc(&data.x_unit.to_string())
+                    .x_desc(data.x_unit.as_ref())
                     .set_all_tick_mark_size(4)
-                    .y_desc(&data.y_unit.to_string())
+                    .y_desc(data.y_unit.as_ref())
                     .draw()
                     .unwrap();
 
                 chart
-                    .draw_series(LineSeries::new(data.points.to_vec(), data.line_style))
+                    .draw_series(LineSeries::new(data.points.iter().copied(), data.line_style))
                     .unwrap();
             }));
 
@@ -285,9 +284,9 @@ impl XyTimeData {
             pause_start: None,
             playback_speed: 1.0,
             points,
-            ranges,
             times,
             window: None,
+            snapshot_dirty: false,
             chart,
         }
     }
@@ -297,23 +296,39 @@ impl XyTimeData {
     ///
     /// If a [`window`](Self::set_window) is set, only the most recent points are
     /// kept, so the chart scrolls.
+    /// Append a point `(x, y)` that becomes visible at `time` seconds.
+    ///
+    /// A sample arriving in time order (the usual case) is an amortised `O(1)`
+    /// append; only out-of-order samples cost an insertion. The chart snapshot is
+    /// refreshed the next time [`draw`](Self::draw) runs, so a burst of samples
+    /// between two frames rebuilds it once instead of once per sample.
+    ///
+    /// If a [`window`](Self::set_window) is set, only the most recent points are
+    /// kept, so the chart scrolls.
     pub fn push(&mut self, x: f32, y: f32, time: f32) {
-        let mut points = self.points.to_vec();
-        let mut times = self.times.to_vec();
-
-        let index = times.partition_point(|known| *known <= time);
-        points.insert(index, (x, y));
-        times.insert(index, time);
-
-        if let Some(window) = self.window {
-            if points.len() > window {
-                let excess = points.len() - window;
-                points.drain(..excess);
-                times.drain(..excess);
+        match self.times.last() {
+            // Out-of-order sample: keep the points sorted by time.
+            Some(last) if *last > time => {
+                let index = self.times.partition_point(|known| *known <= time);
+                self.points.insert(index, (x, y));
+                self.times.insert(index, time);
+            }
+            // Common case: the sample is the newest one.
+            _ => {
+                self.points.push((x, y));
+                self.times.push(time);
             }
         }
 
-        self.apply(points, times);
+        if let Some(window) = self.window {
+            if self.points.len() > window {
+                let excess = self.points.len() - window;
+                self.points.drain(..excess);
+                self.times.drain(..excess);
+            }
+        }
+
+        self.snapshot_dirty = true;
     }
 
     /// Set the maximum number of points kept (`None` for unbounded) and trim the
@@ -324,10 +339,9 @@ impl XyTimeData {
         if let Some(window) = window {
             if self.points.len() > window {
                 let excess = self.points.len() - window;
-                let points = self.points[excess..].to_vec();
-                let times = self.times[excess..].to_vec();
-
-                self.apply(points, times);
+                self.points.drain(..excess);
+                self.times.drain(..excess);
+                self.snapshot_dirty = true;
             }
         }
     }
@@ -350,21 +364,38 @@ impl XyTimeData {
         self.points.is_empty()
     }
 
-    /// Replace the stored points/times and recompute the derived ranges and the
-    /// chart configuration.
-    fn apply(&mut self, points: Vec<(f32, f32)>, times: Vec<f32>) {
-        let ranges = cumulative_ranges(&points);
+    /// Index of the last point already visible at `time`, or `None` when no
+    /// points are stored.
+    fn time_index(&self, time: f32) -> Option<usize> {
+        if self.times.is_empty() {
+            return None;
+        }
 
-        self.points = points.into();
-        self.times = times.into();
-        self.ranges = ranges.into();
+        let index = match self
+            .times
+            .binary_search_by(|probe| probe.partial_cmp(&time).unwrap_or(Ordering::Equal))
+        {
+            Ok(index) => index,
+            // The insertion point counts the points with `time <= time`; the last
+            // visible one is just before it. `saturating_sub` also keeps a time
+            // past the end from indexing out of bounds.
+            Err(index) => index.saturating_sub(1),
+        };
 
-        let range = self.ranges.last().cloned().unwrap_or((0.0..1.0, 0.0..1.0));
-        let points = self.points.clone();
+        Some(index)
+    }
+
+    /// Rebuild the chart's immutable snapshot from the stored points. Cheap to
+    /// skip when nothing changed, so it is only run when a frame actually draws.
+    fn sync_snapshot(&mut self) {
+        let range = xy_range(&self.points);
+        let points: Arc<[(f32, f32)]> = self.points.clone().into();
 
         let data = self.chart.get_data_mut();
         data.points = points;
         data.range = range;
+
+        self.snapshot_dirty = false;
     }
 
     /// Set the time to resume playback at. Time is in seconds.
@@ -518,24 +549,24 @@ impl XyTimeData {
     /// Draw the chart to a Ui. Will also proceed to animate the chart if playback is currently
     /// enabled.
     pub fn draw(&mut self, ui: &Ui) {
-        if let Some(_) = self.playback_start {
+        if self.playback_start.is_some() {
             let time = self.current_time();
 
-            let time_index = match self
-                .times
-                .binary_search_by(|probe| probe.partial_cmp(&time).unwrap_or(Ordering::Equal))
-            {
-                Ok(index) => index,
-                Err(index) => self.points.len().min(index),
-            };
+            // `current_time` may have just stopped playback at the end of the data.
+            if let Some(time_index) = self.time_index(time) {
+                let points = &self.points[..=time_index];
+                let range = xy_range(points);
 
-            // The time index is always a valid index, so ensure the range is inclusive
-            let points = &self.points[..=time_index];
-            let range = self.ranges[time_index].clone();
+                let config = self.chart.get_data_mut();
+                config.points = points.into();
+                config.range = range;
 
-            let config = self.chart.get_data_mut();
-            config.points = points.into();
-            config.range = range;
+                // The chart no longer holds the full snapshot; restore it once
+                // playback stops.
+                self.snapshot_dirty = true;
+            }
+        } else if self.snapshot_dirty {
+            self.sync_snapshot();
         }
 
         self.chart.draw(ui);
@@ -630,5 +661,71 @@ impl XyTimeData {
     /// Return the speed the chart is animated at.
     pub fn get_playback_speed(&self) -> f32 {
         self.playback_speed
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn chart() -> XyTimeData {
+        XyTimeData::empty("x", "y", "test")
+    }
+
+    #[test]
+    fn push_keeps_points_ordered_by_time() {
+        let mut c = chart();
+        c.push(1.0, 10.0, 0.0);
+        c.push(2.0, 20.0, 2.0);
+        // An out-of-order sample is inserted by time.
+        c.push(3.0, 30.0, 1.0);
+
+        assert_eq!(c.times, vec![0.0, 1.0, 2.0]);
+        assert_eq!(c.points, vec![(1.0, 10.0), (3.0, 30.0), (2.0, 20.0)]);
+    }
+
+    #[test]
+    fn window_keeps_most_recent_points() {
+        let mut c = chart();
+        c.set_window(Some(3));
+        for i in 0..10 {
+            c.push(i as f32, i as f32, i as f32);
+        }
+
+        assert_eq!(c.len(), 3);
+        assert_eq!(c.times, vec![7.0, 8.0, 9.0]);
+    }
+
+    #[test]
+    fn snapshot_covers_every_stored_point() {
+        let mut c = chart();
+        c.push(1.0, 5.0, 0.0);
+        c.push(-2.0, 9.0, 1.0);
+        c.sync_snapshot();
+
+        let data = c.chart.get_data();
+        assert_eq!(data.range.0, pad_range(-2.0..1.0));
+        assert_eq!(data.range.1, pad_range(5.0..9.0));
+        assert_eq!(data.points.to_vec(), vec![(1.0, 5.0), (-2.0, 9.0)]);
+    }
+
+    #[test]
+    fn empty_chart_uses_unit_range() {
+        let c = chart();
+        assert_eq!(xy_range(&[]), (0.0..1.0, 0.0..1.0));
+        assert_eq!(c.chart.get_data().range, (0.0..1.0, 0.0..1.0));
+    }
+
+    #[test]
+    fn time_index_is_in_bounds_for_any_time() {
+        let mut c = chart();
+        assert_eq!(c.time_index(0.0), None);
+
+        c.push(0.0, 0.0, 1.0);
+        c.push(0.0, 0.0, 2.0);
+
+        assert_eq!(c.time_index(1.5), Some(0));
+        // A time past the end must still yield a valid index.
+        assert_eq!(c.time_index(10.0), Some(1));
     }
 }
