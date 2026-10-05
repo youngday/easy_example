@@ -2,3 +2,4 @@
 Cargo.lock
 .xmake/linux/x86_64/project.lock
 examples/logs/
+.codewhale/
