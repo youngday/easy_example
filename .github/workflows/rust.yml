@@ -16,6 +16,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
+    - name: Install system dependencies
+      # The egui/plotters examples pull in font-kit, whose fontconfig-sys build
+      # script needs the system fontconfig and freetype development packages.
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y --no-install-recommends \
+          pkg-config \
+          libfontconfig1-dev \
+          libfreetype6-dev
     - name: Build
       run: cargo build --verbose
     - name: Run tests
