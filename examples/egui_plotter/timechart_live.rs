@@ -1,13 +1,14 @@
-//! Live plotting example: zenoh subscriber -> `egui_plotter::charts::TimeData`.
+//! Live XY plotting example: zenoh subscriber -> `egui_plotter::charts::XyTimeData`.
 //!
-//! Subscribes to `demo/easy_example/**` with zenoh and plots the `funky` field of
-//! every received [`TransmissionData`] as it arrives, with the X axis being the
-//! seconds elapsed since the application started.
+//! Subscribes to `demo/easy_example/**` with zenoh and plots each received
+//! [`TransmissionData`] as a point `(x, y)` on a single chart — the `x` field on
+//! the horizontal axis and the `y` field on the vertical one. The sample's arrival
+//! time is only used to order the points.
 //!
 //! The zenoh session is async (tokio) while eframe drives a blocking native event
 //! loop, so the subscriber runs on a background thread and hands samples to the UI
-//! through a channel. Samples are appended with `TimeData::push` and the chart is
-//! kept to a rolling window with `TimeData::set_window` (default 100 samples,
+//! through a channel. Samples are appended with `XyTimeData::push` and the chart is
+//! kept to a rolling window with `XyTimeData::set_window` (default 100 points,
 //! adjustable with the slider), so it scrolls instead of being rebuilt.
 //!
 //! Run the publisher from another terminal first:
@@ -24,10 +25,10 @@ use std::{
 
 use easy_example::TransmissionData;
 use eframe::egui::{self, CentralPanel, Slider, Visuals};
-use egui_plotter::charts::TimeData;
+use egui_plotter::charts::XyTimeData;
 
 const KEY_EXPR: &str = "demo/easy_example/**";
-/// Default number of samples kept on screen.
+/// Default number of points kept on screen.
 const DEFAULT_WINDOW: usize = 100;
 const MIN_WINDOW: usize = 10;
 const MAX_WINDOW: usize = 1000;
@@ -38,9 +39,9 @@ fn main() {
 
     let native_options = eframe::NativeOptions::default();
     eframe::run_native(
-        "Live Zenoh TimeData Example",
+        "Live Zenoh XY Example",
         native_options,
-        Box::new(|cc| Ok(Box::new(LiveTimeChart::new(cc, rx)))),
+        Box::new(|cc| Ok(Box::new(LiveXyChart::new(cc, rx)))),
     )
     .unwrap();
 }
@@ -77,26 +78,26 @@ fn spawn_zenoh_subscriber(tx: Sender<TransmissionData>) {
     });
 }
 
-struct LiveTimeChart {
+struct LiveXyChart {
     rx: Receiver<TransmissionData>,
-    timechart: TimeData,
+    chart: XyTimeData,
     start: Instant,
     received: u64,
     last: Option<TransmissionData>,
     window: usize,
 }
 
-impl LiveTimeChart {
+impl LiveXyChart {
     fn new(cc: &eframe::CreationContext<'_>, rx: Receiver<TransmissionData>) -> Self {
         // Enable light mode
         cc.egui_ctx.set_visuals(Visuals::light());
 
-        let mut timechart = TimeData::empty("funky", "Live zenoh data");
-        timechart.set_window(Some(DEFAULT_WINDOW));
+        let mut chart = XyTimeData::empty("x", "y", "TransmissionData (y vs x)");
+        chart.set_window(Some(DEFAULT_WINDOW));
 
         Self {
             rx,
-            timechart,
+            chart,
             start: Instant::now(),
             received: 0,
             last: None,
@@ -104,18 +105,18 @@ impl LiveTimeChart {
         }
     }
 
-    /// Append every pending sample to the chart.
+    /// Append every pending sample as an `(x, y)` point.
     fn ingest_new_samples(&mut self) {
         while let Ok(data) = self.rx.try_recv() {
             self.received += 1;
             let elapsed = self.start.elapsed().as_secs_f32();
-            self.timechart.push(elapsed, data.funky as f32);
+            self.chart.push(data.x as f32, data.y as f32, elapsed);
             self.last = Some(data);
         }
     }
 }
 
-impl eframe::App for LiveTimeChart {
+impl eframe::App for LiveXyChart {
     fn ui(&mut self, ui: &mut egui::Ui, _frame: &mut eframe::Frame) {
         let ctx = ui.ctx().clone();
         self.ingest_new_samples();
@@ -135,12 +136,13 @@ impl eframe::App for LiveTimeChart {
                     .changed()
                 {
                     self.window = window;
-                    self.timechart.set_window(Some(window));
+                    self.chart.set_window(Some(window));
                 }
-                ui.label(format!("{} pts", self.timechart.len()));
+                ui.label(format!("{} pts", self.chart.len()));
             });
+            ui.separator();
 
-            self.timechart.draw(ui);
+            self.chart.draw(ui);
         });
 
         // Keep refreshing so newly arrived samples show up promptly.
