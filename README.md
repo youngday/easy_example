@@ -44,6 +44,7 @@
 |ws_client,ws_server| | websocket   |
 |wt_server,wt_client|webtransport|replace websocket with http3/quic|
 |egui_3d,egui_timechart|native egui plotting|vendored egui-plotter, egui/eframe 0.36|
+|egui_timechart_live|live egui timechart|zenoh subscriber -> TimeData in real time|
 ## vscode build
 
 https://code.visualstudio.com/docs/languages/rust
@@ -110,6 +111,7 @@ cd web; npm install; npx parcel serve client.html --open
     discovery
     egui_3d
     egui_timechart
+    egui_timechart_live
     ice_pub
     ice_sub
     load_csv

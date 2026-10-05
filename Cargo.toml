@@ -196,3 +196,8 @@ path = "examples/egui_plotter/3d.rs"
 [[example]]
 name = "egui_timechart"
 path = "examples/egui_plotter/timechart.rs"
+
+# zenoh subscriber plotted live with egui-plotter's TimeData
+[[example]]
+name = "egui_timechart_live"
+path = "examples/egui_plotter/timechart_live.rs"

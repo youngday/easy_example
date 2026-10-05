@@ -23,6 +23,42 @@ const Y_MARGIN: i32 = 25;
 const LABEL_AREA: i32 = 25;
 const CAPTION_SIZE: i32 = 10;
 
+/// Expand a range so that it is never empty. Plotters (and the animation
+/// slicing below) require `start < end`, which a single point or a flat series
+/// would otherwise violate.
+fn pad_range(range: Range<f32>) -> Range<f32> {
+    if range.start < range.end {
+        return range;
+    }
+
+    let delta = range.start.abs().max(1.0) * 0.05;
+
+    (range.start - delta)..(range.end + delta)
+}
+
+/// Cumulative X/Y ranges: entry `i` covers points `0..=i`.
+fn cumulative_ranges(points: &[(f32, f32)]) -> Vec<(Range<f32>, Range<f32>)> {
+    let mut ranges = Vec::with_capacity(points.len());
+
+    let mut min_x: f32 = f32::MAX;
+    let mut min_y: f32 = f32::MAX;
+    let mut max_x: f32 = f32::MIN;
+    let mut max_y: f32 = f32::MIN;
+
+    for point in points {
+        let (x, y) = *point;
+
+        min_x = min_x.min(x);
+        min_y = min_y.min(y);
+        max_x = max_x.max(x);
+        max_y = max_y.max(y);
+
+        ranges.push((pad_range(min_x..max_x), pad_range(min_y..max_y)));
+    }
+
+    ranges
+}
+
 #[derive(Clone)]
 struct XyTimeConfig {
     /// Points to be plotted. A slice of X, Y f32 pairs.
@@ -76,6 +112,8 @@ pub struct XyTimeData {
     points: Arc<[(f32, f32)]>,
     ranges: Arc<[(Range<f32>, Range<f32>)]>,
     times: Arc<[f32]>,
+    /// Maximum number of points kept; `None` means unbounded.
+    window: Option<usize>,
     chart: Chart<XyTimeConfig>,
 }
 
@@ -85,52 +123,32 @@ impl XyTimeData {
         let mut points = points.to_vec();
 
         // Sort by the time of the point
-        points.sort_by(|a, b| {
-            let (_, _, a) = a;
-            let (_, _, b) = b;
+        points.sort_by(|a, b| a.2.partial_cmp(&b.2).unwrap_or(Ordering::Equal));
 
-            a.partial_cmp(b).unwrap_or(Ordering::Equal)
-        });
+        let times: Vec<f32> = points.iter().map(|(_, _, time)| *time).collect();
+        let xy: Vec<(f32, f32)> = points.iter().map(|(x, y, _)| (*x, *y)).collect();
 
-        let times: Vec<f32> = points
-            .iter()
-            .map(|point| {
-                let (_, _, time) = point;
+        Self::from_state(xy, times, x_unit, y_unit, caption)
+    }
 
-                *time
-            })
-            .collect();
+    /// Create an empty chart.
+    ///
+    /// Points are then appended with [`push`](Self::push), so a live or streaming
+    /// plot never has to rebuild the chart for every sample. Use
+    /// [`set_window`](Self::set_window) to keep only the most recent points.
+    pub fn empty(x_unit: &str, y_unit: &str, caption: &str) -> Self {
+        Self::from_state(Vec::new(), Vec::new(), x_unit, y_unit, caption)
+    }
 
-        let points: Vec<(f32, f32)> = points
-            .iter()
-            .map(|point| {
-                let (x, y, _) = point;
-
-                (*x, *y)
-            })
-            .collect();
-
+    fn from_state(
+        points: Vec<(f32, f32)>,
+        times: Vec<f32>,
+        x_unit: &str,
+        y_unit: &str,
+        caption: &str,
+    ) -> Self {
         // Ranges include the X range, Y range, and time in seconds
-        let mut ranges = Vec::<(Range<f32>, Range<f32>)>::with_capacity(points.len());
-
-        let mut min_x: f32 = f32::MAX;
-        let mut min_y: f32 = f32::MAX;
-        let mut max_x: f32 = f32::MIN;
-        let mut max_y: f32 = f32::MIN;
-
-        for point in &points {
-            let (x, y) = *point;
-
-            min_x = min_x.min(x);
-            min_y = min_y.min(y);
-            max_x = max_x.max(x);
-            max_y = max_y.max(y);
-
-            let range_x = min_x..max_x;
-            let range_y = min_y..max_y;
-
-            ranges.push((range_x, range_y));
-        }
+        let ranges = cumulative_ranges(&points);
 
         // Turn all the vecs and strings into arcs since they are more or less read-only at
         // this point
@@ -172,7 +190,7 @@ impl XyTimeData {
 
         let config = XyTimeConfig {
             points: points.clone(),
-            range: ranges.last().unwrap().clone(),
+            range: ranges.last().cloned().unwrap_or((0.0..1.0, 0.0..1.0)),
             line_style,
             grid_style,
             subgrid_style,
@@ -269,8 +287,84 @@ impl XyTimeData {
             points,
             ranges,
             times,
+            window: None,
             chart,
         }
+    }
+
+    /// Append a point `(x, y)` that becomes visible at `time` seconds and refresh
+    /// the chart. Points are kept ordered by `time`.
+    ///
+    /// If a [`window`](Self::set_window) is set, only the most recent points are
+    /// kept, so the chart scrolls.
+    pub fn push(&mut self, x: f32, y: f32, time: f32) {
+        let mut points = self.points.to_vec();
+        let mut times = self.times.to_vec();
+
+        let index = times.partition_point(|known| *known <= time);
+        points.insert(index, (x, y));
+        times.insert(index, time);
+
+        if let Some(window) = self.window {
+            if points.len() > window {
+                let excess = points.len() - window;
+                points.drain(..excess);
+                times.drain(..excess);
+            }
+        }
+
+        self.apply(points, times);
+    }
+
+    /// Set the maximum number of points kept (`None` for unbounded) and trim the
+    /// stored points immediately. Useful for a rolling/live data window.
+    pub fn set_window(&mut self, window: Option<usize>) {
+        self.window = window;
+
+        if let Some(window) = window {
+            if self.points.len() > window {
+                let excess = self.points.len() - window;
+                let points = self.points[excess..].to_vec();
+                let times = self.times[excess..].to_vec();
+
+                self.apply(points, times);
+            }
+        }
+    }
+
+    /// Return the configured maximum number of points, if any.
+    #[inline]
+    pub fn window(&self) -> Option<usize> {
+        self.window
+    }
+
+    /// Return the number of stored points.
+    #[inline]
+    pub fn len(&self) -> usize {
+        self.points.len()
+    }
+
+    /// Return true if no points are stored.
+    #[inline]
+    pub fn is_empty(&self) -> bool {
+        self.points.is_empty()
+    }
+
+    /// Replace the stored points/times and recompute the derived ranges and the
+    /// chart configuration.
+    fn apply(&mut self, points: Vec<(f32, f32)>, times: Vec<f32>) {
+        let ranges = cumulative_ranges(&points);
+
+        self.points = points.into();
+        self.times = times.into();
+        self.ranges = ranges.into();
+
+        let range = self.ranges.last().cloned().unwrap_or((0.0..1.0, 0.0..1.0));
+        let points = self.points.clone();
+
+        let data = self.chart.get_data_mut();
+        data.points = points;
+        data.range = range;
     }
 
     /// Set the time to resume playback at. Time is in seconds.
@@ -489,9 +583,7 @@ impl XyTimeData {
     #[inline]
     /// Return the time the chart starts at when playback is enabled.
     pub fn start_time(&self) -> f32 {
-        let time_start = *self.times.first().unwrap();
-
-        time_start
+        self.times.first().copied().unwrap_or(0.0)
     }
 
     /// Return the current time to be animated when playback is enabled.
@@ -531,9 +623,7 @@ impl XyTimeData {
     #[inline]
     /// Return the time the chart finished animating at when playback is enabled.
     pub fn end_time(&self) -> f32 {
-        let time_end = *self.times.last().unwrap();
-
-        time_end
+        self.times.last().copied().unwrap_or(0.0)
     }
 
     #[inline]

@@ -1,9 +1,11 @@
 # Vendored from https://github.com/Gip-Gip/egui-plotter
 # Upstream commit: 6740484 (branch `main`, crate version 0.7.0).
 #
-# Only substantive change vs. upstream: the `egui` requirement was relaxed from
-# `>=0.32.1, <0.35` to `0.36`, so the crate can be built alongside `eframe` 0.36.
-# See NOTICE.md for details. `src/`, `README.md` and `LICENSE` are verbatim copies.
+# Changes vs. upstream: the `egui` requirement was relaxed from
+# `>=0.32.1, <0.35` to `0.36` (to build alongside `eframe` 0.36), and
+# `src/charts/{xytime,timedata}.rs` gained a live/streaming API
+# (`empty`/`push`/`set_window`). See NOTICE.md for details.
+# `README.md` and `LICENSE` are verbatim copies.
 
 [package]
 name = "egui-plotter"

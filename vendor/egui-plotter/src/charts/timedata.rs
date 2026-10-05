@@ -38,6 +38,44 @@ impl TimeData {
         Self { chart }
     }
 
+    /// Create an empty chart that can be filled with [`push`](Self::push).
+    pub fn empty(unit: &str, caption: &str) -> Self {
+        Self {
+            chart: XyTimeData::empty("seconds", unit, caption),
+        }
+    }
+
+    /// Append a sample: `value` becomes visible at `time` seconds.
+    ///
+    /// If a [`window`](Self::set_window) is set, only the most recent samples are
+    /// kept, so the chart scrolls.
+    pub fn push(&mut self, time: f32, value: f32) {
+        self.chart.push(time, value, time)
+    }
+
+    /// Set the maximum number of samples kept (`None` for unbounded).
+    pub fn set_window(&mut self, window: Option<usize>) {
+        self.chart.set_window(window)
+    }
+
+    /// Return the configured maximum number of samples, if any.
+    #[inline]
+    pub fn window(&self) -> Option<usize> {
+        self.chart.window()
+    }
+
+    /// Return the number of stored samples.
+    #[inline]
+    pub fn len(&self) -> usize {
+        self.chart.len()
+    }
+
+    /// Return true if no samples are stored.
+    #[inline]
+    pub fn is_empty(&self) -> bool {
+        self.chart.is_empty()
+    }
+
     /// Set the time to resume playback at. Time is in seconds.
     #[inline]
     pub fn set_time(&mut self, time: f32) {
