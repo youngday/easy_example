@@ -11,8 +11,9 @@
 // SPDX-License-Identifier: Apache-2.0 OR MIT
 
 use iceoryx2::prelude::*;
+use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Clone, Copy, ZeroCopySend)]
+#[derive(Debug, Clone, Copy, ZeroCopySend, Serialize, Deserialize)]
 // optional type name; if not set, `core::any::type_name::<TransmissionData>()` is used
 #[type_name("TransmissionData")]
 #[repr(C)]

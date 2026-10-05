@@ -1,38 +1,28 @@
-// Copyright (c) 2023 Contributors to the Eclipse Foundation
-//
-// See the NOTICE file(s) distributed with this work for additional
-// information regarding copyright ownership.
-//
-// This program and the accompanying materials are made available under the
-// terms of the Apache Software License 2.0 which is available at
-// https://www.apache.org/licenses/LICENSE-2.0, or the MIT license
-// which is available at https://opensource.org/licenses/MIT.
-//
-// SPDX-License-Identifier: Apache-2.0 OR MIT
+//! Zenoh subscriber example.
+//!
+//! Subscribes to `demo/easy_example/**` and prints every [`TransmissionData`]
+//! sample it receives. Payloads are JSON, matching `zenoh_pub`.
+//!
+//! ```sh
+//! cargo run --example zenoh_sub
+//! ```
 
-use core::time::Duration;
 use easy_example::TransmissionData;
-use iceoryx2::prelude::*;
 
-const CYCLE_TIME: Duration = Duration::from_secs(1);
+const KEY_EXPR: &str = "demo/easy_example/**";
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let node = NodeBuilder::new().create::<ipc::Service>()?;
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    let session = zenoh::open(zenoh::Config::default()).await?;
+    let subscriber = session.declare_subscriber(KEY_EXPR).await?;
 
-    let service = node
-        .service_builder(&"My/Funk/ServiceName".try_into()?)
-        .publish_subscribe::<TransmissionData>()
-        .open_or_create()?;
+    println!("zenoh subscriber declared on `{KEY_EXPR}`");
 
-    let subscriber = service.subscriber_builder().create()?;
-
-    while node.wait(CYCLE_TIME).is_ok() {
-        while let Some(sample) = subscriber.receive()? {
-            println!("received: {:?}", *sample);
-        }
+    while let Ok(sample) = subscriber.recv_async().await {
+        let bytes = sample.payload().to_bytes();
+        let data: TransmissionData = serde_json::from_slice(bytes.as_ref())?;
+        println!("received on {}: {data:?}", sample.key_expr());
     }
-
-    println!("exit");
 
     Ok(())
 }

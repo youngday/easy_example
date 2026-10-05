@@ -1,48 +1,44 @@
-// Copyright (c) 2023 Contributors to the Eclipse Foundation
-//
-// See the NOTICE file(s) distributed with this work for additional
-// information regarding copyright ownership.
-//
-// This program and the accompanying materials are made available under the
-// terms of the Apache Software License 2.0 which is available at
-// https://www.apache.org/licenses/LICENSE-2.0, or the MIT license
-// which is available at https://opensource.org/licenses/MIT.
-//
-// SPDX-License-Identifier: Apache-2.0 OR MIT
+//! Zenoh publisher example.
+//!
+//! Publishes a [`TransmissionData`] sample every second on the key expression
+//! `demo/easy_example/transmission`, serialized as JSON.
+//!
+//! Start the subscriber first, then this publisher (zenoh peers discover each
+//! other automatically on the local network, so order does not really matter):
+//!
+//! ```sh
+//! cargo run --example zenoh_sub
+//! cargo run --example zenoh_pub
+//! ```
 
-use core::time::Duration;
+use std::time::Duration;
+
 use easy_example::TransmissionData;
-use iceoryx2::prelude::*;
 
+const KEY_EXPR: &str = "demo/easy_example/transmission";
 const CYCLE_TIME: Duration = Duration::from_secs(1);
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let node = NodeBuilder::new().create::<ipc::Service>()?;
+#[tokio::main]
+async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
+    let session = zenoh::open(zenoh::Config::default()).await?;
+    let publisher = session.declare_publisher(KEY_EXPR).await?;
 
-    let service = node
-        .service_builder(&"My/Funk/ServiceName".try_into()?)
-        .publish_subscribe::<TransmissionData>()
-        .open_or_create()?;
-
-    let publisher = service.publisher_builder().create()?;
+    println!("zenoh publisher declared on `{KEY_EXPR}`");
 
     let mut counter: u64 = 0;
-    while node.wait(CYCLE_TIME).is_ok() {
+    loop {
         counter += 1;
-        let sample = publisher.loan_uninit()?;
 
-        let sample = sample.write_payload(TransmissionData {
+        let sample = TransmissionData {
             x: counter as i32,
             y: counter as i32 * 3,
             funky: counter as f64 * 812.12,
-        });
+        };
 
-        sample.send()?;
+        let payload = serde_json::to_vec(&sample)?;
+        publisher.put(payload).await?;
+        println!("send sample {counter}: {sample:?}");
 
-        println!("Send sample {} ...", counter);
+        tokio::time::sleep(CYCLE_TIME).await;
     }
-
-    println!("exit");
-
-    Ok(())
 }

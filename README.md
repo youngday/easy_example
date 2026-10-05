@@ -18,6 +18,7 @@
 |plot|plotly|plot data all you want|plot to web,easy than plotters,(https://github.com/youngday/easy_wasm_plotly)|
 |egui-plotter|plotters|native plotting in egui/eframe|vendored at vendor/egui-plotter (0.7.0), patched for egui 0.36|
 |iceoryx2|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
+|zenoh|dds|pubsub dds over zenoh|real zenoh pub/sub, brokerless peer mode|
 |poem_grpc| |tonic grpc   |put ./proto build.rs files same as cargo.toml path |
 |axum websocket| |websocket   | axum example ,tokio-tungstenite |
 |quinn quic|quiche    | webtransport | |
@@ -37,6 +38,7 @@
 |base64|base64|encode decode|
 |plot|plot data|https://github.com/youngday/easy_wasm_plotly |
 |ice_pub,ice_sub|pub sub|pub sub|
+|zenoh_pub,zenoh_sub|zenoh pub sub|real zenoh publisher-subscriber|
 |discovery|iceoryx2 discovery| |
 |grpc-client,grpc-server,grpc-jsoncodec-server|poem grpc examples ,with json codec |⚠️ grpc branch   |
 |ws_client,ws_server| | websocket   |
@@ -124,6 +126,8 @@ cd web; npm install; npx parcel serve client.html --open
     ws_server
     wt_client
     wt_server
+    zenoh_pub
+    zenoh_sub
     zeromq_tmq
     zmq_pub
     zmq_sub

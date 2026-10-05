@@ -102,6 +102,8 @@ udp = { package = "quinn-udp", version = "0.6.1", default-features = false }
 tokio-tungstenite = "0.30.0"
 tungstenite = "0.30.0"
 serde_yaml = "0.9.34"
+zenoh = "1.10.1"
+serde_json = "1.0.151"
 
 
 [dev-dependencies]
@@ -146,6 +148,14 @@ path = "examples/dds_iceoryx2/subscriber.rs"
 [[example]]
 name = "discovery"
 path = "examples/discovery/discovery.rs"
+
+# zenoh publish_subscribe
+[[example]]
+name = "zenoh_pub"
+path = "examples/dds_zenoh/publisher.rs"
+[[example]]
+name = "zenoh_sub"
+path = "examples/dds_zenoh/subscriber.rs"
 
 [[example]]
 name = "zmq_pub"
