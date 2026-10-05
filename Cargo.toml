@@ -134,6 +134,9 @@ web-transport-quinn = "0.13.1"
 eframe = "0.36"
 egui-plotter = { path = "vendor/egui-plotter", features = ["timechart"] }
 plotters = "0.3"
+# liveplot (crates.io, https://github.com/ulikoehler/liveplot-rs) — alternative
+# realtime egui plotting UI; see examples/liveplot/
+liveplot = "2.4"
 
 [build-dependencies]
 poem-grpc-build = "0.5.9"
@@ -201,3 +204,8 @@ path = "examples/egui_plotter/timechart.rs"
 [[example]]
 name = "egui_timechart_live"
 path = "examples/egui_plotter/timechart_live.rs"
+
+# zenoh subscriber plotted live with the `liveplot` crate (crates.io)
+[[example]]
+name = "liveplot_zenoh"
+path = "examples/liveplot/liveplot_zenoh.rs"

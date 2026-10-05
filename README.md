@@ -17,6 +17,7 @@
 |base64||base64|encode decode|
 |plot|plotly|plot data all you want|plot to web,easy than plotters,(https://github.com/youngday/easy_wasm_plotly)|
 |egui-plotter|plotters|native plotting in egui/eframe|vendored at vendor/egui-plotter (0.7.0), patched for egui 0.36|
+|liveplot|egui-plotter|realtime plotting UI in egui/eframe|from crates.io (https://github.com/ulikoehler/liveplot-rs), multi-trace, thresholds, CSV/Parquet export|
 |iceoryx2|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
 |zenoh|dds|pubsub dds over zenoh|real zenoh pub/sub, brokerless peer mode|
 |poem_grpc| |tonic grpc   |put ./proto build.rs files same as cargo.toml path |
@@ -45,6 +46,7 @@
 |wt_server,wt_client|webtransport|replace websocket with http3/quic|
 |egui_3d,egui_timechart|native egui plotting|vendored egui-plotter, egui/eframe 0.36|
 |egui_timechart_live|live egui XY chart|zenoh subscriber -> XyTimeData, y vs x in real time|
+|liveplot_zenoh|live plot with the liveplot crate|zenoh subscriber -> liveplot PlotSink, real-time pub/sub|
 ## vscode build
 
 https://code.visualstudio.com/docs/languages/rust
@@ -114,6 +116,7 @@ cd web; npm install; npx parcel serve client.html --open
     egui_timechart_live
     ice_pub
     ice_sub
+    liveplot_zenoh
     load_csv
     mpsc_tokio
     mqtt_asyncpubsub
