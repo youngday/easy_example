@@ -16,6 +16,7 @@
 |tokio-serial|serial|async serial port||
 |base64||base64|encode decode|
 |plot|plotly|plot data all you want|plot to web,easy than plotters,(https://github.com/youngday/easy_wasm_plotly)|
+|egui-plotter|plotters|native plotting in egui/eframe|vendored at vendor/egui-plotter (0.7.0), patched for egui 0.36|
 |iceoryx2|dds|pubsub dds ipc for ros |new realtime(10us) ipc |
 |poem_grpc| |tonic grpc   |put ./proto build.rs files same as cargo.toml path |
 |axum websocket| |websocket   | axum example ,tokio-tungstenite |
@@ -40,6 +41,7 @@
 |grpc-client,grpc-server,grpc-jsoncodec-server|poem grpc examples ,with json codec |⚠️ grpc branch   |
 |ws_client,ws_server| | websocket   |
 |wt_server,wt_client|webtransport|replace websocket with http3/quic|
+|egui_3d,egui_timechart|native egui plotting|vendored egui-plotter, egui/eframe 0.36|
 ## vscode build
 
 https://code.visualstudio.com/docs/languages/rust
@@ -104,6 +106,8 @@ cd web; npm install; npx parcel serve client.html --open
 
     base64
     discovery
+    egui_3d
+    egui_timechart
     ice_pub
     ice_sub
     load_csv

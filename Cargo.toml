@@ -128,6 +128,11 @@ url = "2.5.8"
 
 web-transport-quinn = "0.13.1"
 
+# egui-plotter examples (native eframe windows); see examples/egui_plotter/
+eframe = "0.36"
+egui-plotter = { path = "vendor/egui-plotter", features = ["timechart"] }
+plotters = "0.3"
+
 [build-dependencies]
 poem-grpc-build = "0.5.9"
 
@@ -173,3 +178,11 @@ path = "examples/mqtt/mqtt_asyncpubsub.rs"
 [[example]]
 name = "rumqttd"
 path = "examples/mqtt/rumqttd.rs"
+
+# egui-plotter examples (vendored in vendor/egui-plotter, patched for egui 0.36)
+[[example]]
+name = "egui_3d"
+path = "examples/egui_plotter/3d.rs"
+[[example]]
+name = "egui_timechart"
+path = "examples/egui_plotter/timechart.rs"

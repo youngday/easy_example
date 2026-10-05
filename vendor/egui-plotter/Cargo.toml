@@ -1,0 +1,28 @@
+# Vendored from https://github.com/Gip-Gip/egui-plotter
+# Upstream commit: 6740484 (branch `main`, crate version 0.7.0).
+#
+# Only substantive change vs. upstream: the `egui` requirement was relaxed from
+# `>=0.32.1, <0.35` to `0.36`, so the crate can be built alongside `eframe` 0.36.
+# See NOTICE.md for details. `src/`, `README.md` and `LICENSE` are verbatim copies.
+
+[package]
+name = "egui-plotter"
+version = "0.7.0"
+edition = "2024"
+authors = ["Charles Thompson"]
+license = "MIT"
+readme = "README.md"
+description = "Simple to use utilties for integrating plotter into egui (vendored copy, egui 0.36)"
+repository = "https://github.com/Gip-Gip/egui-plotter"
+publish = false
+
+[features]
+timechart = ["dep:instant"]
+
+[dependencies]
+egui = "0.36"
+plotters-backend = "0.3"
+plotters = "0.3"
+earcutr = "0.4.3"
+# if you are using egui then chances are you're using trunk which uses wasm bindgen
+instant = { version = "0.1", features = ["wasm-bindgen"], optional = true }
