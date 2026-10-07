@@ -10,7 +10,7 @@
 |tokio||async task ,tcp ,udp,channel,|async frame,tokio::spawn|
 |config|yaml,toml,json,single file|read config files ,and put into struct data|simplize config function|
 |tracing|log4rs,env_logger|async log with file||
-|tmq||zeromq with tokio||
+|zeromq||native Rust ZeroMQ (zmq.rs), async pub/sub|pure Rust, no libzmq C dep|
 |once_cell|lazy_static|global reference from config file||
 |rumqttc|paho-mqtt|mqtt of rust with tokio||
 |tokio-serial|serial|async serial port||
@@ -29,8 +29,8 @@
 |-|-|-|
 |tcp-client,tcp-server|tcp client server||
 |post|http client post|with dynamic json|
-|zeromq-tmq|get udp,http data to zeromq|  |
-|zmq_pub,zmq_sub|tmq ,zeromq lib, publish,subscriber|  |
+|zeromq-pubsub|get udp,http data to zeromq|  |
+|zmq_pub,zmq_sub|zeromq (zmq.rs), publish,subscriber|  |
 |udp-client,udp-server|udp client,server||
 |channel-mpsc|multi productor,single consummer queue|mpsc,for mpmc ,see flume,async-channel|
 |mqttd|mqtt broker|mqtt with tokio , run mqtt broker ,before run client , ```cargo run --release --example rumqttd -- -c rumqttd.toml -vvv   ```|
@@ -133,6 +133,6 @@ cd web; npm install; npx parcel serve client.html --open
     wt_server
     zenoh_pub
     zenoh_sub
-    zeromq_tmq
+    zeromq_pubsub
     zmq_pub
     zmq_sub
