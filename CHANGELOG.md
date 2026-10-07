@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1007,2026
+* replace tmq with zeromq (native Rust ZeroMQ, zmq.rs), examples/zeromq
+
 ## 0623,2026
 update crates,
 chang into log crate: tracing

@@ -1,13 +1,12 @@
-use tmq::{publish, Context, Result};
-
-use futures::SinkExt;
+use bytes::Bytes;
 use std::time::Duration;
 use tokio::time::sleep;
 use tracing::{debug, error, info, trace, warn};
 use tracing_subscriber::{fmt, prelude::*, EnvFilter, Registry};
+use zeromq::{PubSocket, Socket, SocketSend, ZmqMessage};
 
 #[tokio::main]
-async fn main() -> Result<()> {
+async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // tracing subscriber 初始化
     let file_appender = tracing_appender::rolling::daily("examples/logs", "zmq_pub.log");
     Registry::default()
@@ -25,21 +24,24 @@ async fn main() -> Result<()> {
 
     info!("version:{0}", version);
 
-    let mut socket = publish(&Context::new()).bind("tcp://127.0.0.1:7899")?;
+    let mut socket = PubSocket::new();
+    socket.bind("tcp://127.0.0.1:7899").await?;
 
     let mut i: f64 = 0.0;
     loop {
- 
-        if i<100.0 {
+        if i < 100.0 {
             i += 1.0;
+        } else {
+            i = 0.0;
         }
-        else {i=0.0;}
-        let message = format!("{}", i*0.01);
+        let message = format!("{}", i * 0.01);
         info!("Publish: {}", message);
 
-        socket
-            .send(vec![b"topic" as &[u8], message.as_bytes()])
-            .await?;
+        // multipart frame 0 is the topic prefix the SUB sockets filter on
+        let mut frames = ZmqMessage::from(Bytes::from_static(b"topic"));
+        frames.push_back(Bytes::from(message));
+        socket.send(frames).await?;
+
         sleep(Duration::from_secs_f64(0.08)).await;
     }
 }

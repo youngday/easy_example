@@ -5,8 +5,8 @@ use serde::{Deserialize, Serialize};
 use easy_example::settings::Settings;
 use std::collections::HashMap;
 
-use futures::{SinkExt, StreamExt};
-use tmq::{publish, subscribe, Context};
+use bytes::Bytes;
+use zeromq::{PubSocket, Socket, SocketRecv, SocketSend, SubSocket, ZmqMessage};
 
 use std::{error::Error, fs::File, io::Read, time::Duration};
 
@@ -104,7 +104,7 @@ struct NetCfg {
 #[tokio::main]
 async fn main() -> Result<(), Box<dyn Error>> {
     // tracing subscriber 初始化
-    let file_appender = tracing_appender::rolling::daily("examples/logs", "zeromq_tmq.log");
+    let file_appender = tracing_appender::rolling::daily("examples/logs", "zeromq_pubsub.log");
     Registry::default()
         .with(EnvFilter::from_default_env().add_directive("info".parse().unwrap()))
         .with(fmt::layer().pretty().with_line_number(true))
@@ -162,6 +162,30 @@ async fn main() -> Result<(), Box<dyn Error>> {
     Ok(())
 }
 
+/// Publishes `message` as a multipart frame whose frame 0 is `topic`, so SUB
+/// sockets filtering on that topic prefix receive it.
+async fn publish(socket: &mut PubSocket, topic: &str, message: &str) {
+    let mut frames = ZmqMessage::from(topic);
+    frames.push_back(Bytes::from(message.to_owned()));
+    socket.send(frames).await.unwrap();
+}
+
+async fn recv_loop(endpoint: &str, topic: &str) {
+    let mut socket = SubSocket::new();
+    socket.connect(endpoint).await.unwrap();
+    socket.subscribe(topic).await.unwrap();
+
+    loop {
+        let msg = socket.recv().await.unwrap();
+        info!(
+            "Subscribe: {:?}",
+            msg.iter()
+                .map(|item| std::str::from_utf8(item).unwrap_or("invalid text"))
+                .collect::<Vec<&str>>()
+        );
+    }
+}
+
 async fn send() {
     let _bindip = HASHMAP.get(&1).unwrap().to_string(); // _recv_ip;
     let _udp_pub_topic = HASHMAP.get(&2).unwrap().to_string(); // _udp_pub_topic;
@@ -169,20 +193,18 @@ async fn send() {
     let _http_pub_topic = HASHMAP.get(&4).unwrap().to_string(); // _http_pub_topic;
     let _tcp_pub_topic = HASHMAP.get(&8).unwrap().to_string(); // _tcp_pub_topic;
 
-    let mut socket = publish(&Context::new()).bind(&_bindip).unwrap();
+    let mut socket = PubSocket::new();
+    socket.bind(&_bindip).await.unwrap();
     let mut i = 0;
     loop {
         i += 1;
         let message = format!("Broadcast #{}", i);
         info!("Publish: {}", message);
-        socket.send(vec![&_udp_pub_topic, &message]).await.unwrap();
-        socket
-            .send(vec![&_serial_pub_topic, &message])
-            .await
-            .unwrap();
-        socket.send(vec![&_http_pub_topic, &message]).await.unwrap();
-        socket.send(vec![&_tcp_pub_topic, &message]).await.unwrap();
-        socket.send(vec!["AAA", &message]).await.unwrap();
+        publish(&mut socket, &_udp_pub_topic, &message).await;
+        publish(&mut socket, &_serial_pub_topic, &message).await;
+        publish(&mut socket, &_http_pub_topic, &message).await;
+        publish(&mut socket, &_tcp_pub_topic, &message).await;
+        publish(&mut socket, "AAA", &message).await;
 
         sleep(Duration::from_millis(2000)).await;
     }
@@ -191,78 +213,23 @@ async fn send() {
 async fn received_udp() {
     let _bindip = HASHMAP.get(&0).unwrap().to_string(); // _send_ip;
     let _udp_sub_topic = HASHMAP.get(&5).unwrap().to_string(); // _udp_sub_topic;
-    let mut socket = subscribe(&Context::new())
-        .connect(&_bindip)
-        .unwrap()
-        .subscribe(_udp_sub_topic.as_bytes())
-        .unwrap();
-
-    while let Some(msg) = socket.next().await {
-        info!(
-            "Subscribe: {:?}",
-            msg.unwrap()
-                .iter()
-                .map(|item| item.as_str().unwrap_or("invalid text"))
-                .collect::<Vec<&str>>()
-        );
-    }
+    recv_loop(&_bindip, &_udp_sub_topic).await;
 }
+
 async fn received_tcp() {
     let _bindip = HASHMAP.get(&0).unwrap().to_string(); // _send_ip;
-    let _udp_sub_topic = HASHMAP.get(&9).unwrap().to_string(); // _udp_sub_topic;
-    let mut socket = subscribe(&Context::new())
-        .connect(&_bindip)
-        .unwrap()
-        .subscribe(_udp_sub_topic.as_bytes())
-        .unwrap();
-
-    while let Some(msg) = socket.next().await {
-        info!(
-            "Subscribe: {:?}",
-            msg.unwrap()
-                .iter()
-                .map(|item| item.as_str().unwrap_or("invalid text"))
-                .collect::<Vec<&str>>()
-        );
-    }
+    let _tcp_sub_topic = HASHMAP.get(&9).unwrap().to_string(); // _tcp_sub_topic;
+    recv_loop(&_bindip, &_tcp_sub_topic).await;
 }
 
 async fn recv_serial() {
     let _bindip = HASHMAP.get(&0).unwrap().to_string(); //_send_ip;
     let _serial_sub_topic = HASHMAP.get(&6).unwrap().to_string(); // _serial_sub_topic;
-    let mut socket = subscribe(&Context::new())
-        .connect(&_bindip)
-        .unwrap()
-        .subscribe(_serial_sub_topic.as_bytes())
-        .unwrap();
-
-    while let Some(msg) = socket.next().await {
-        info!(
-            "Subscribe: {:?}",
-            msg.unwrap()
-                .iter()
-                .map(|item| item.as_str().unwrap_or("invalid text"))
-                .collect::<Vec<&str>>()
-        );
-    }
+    recv_loop(&_bindip, &_serial_sub_topic).await;
 }
 
 async fn recv_http() {
     let _bindip = HASHMAP.get(&0).unwrap().to_string(); // _send_ip;
     let _http_sub_topic = HASHMAP.get(&7).unwrap().to_string(); // _http_sub_topic;
-    let mut socket = subscribe(&Context::new())
-        .connect(&_bindip)
-        .unwrap()
-        .subscribe(_http_sub_topic.as_bytes())
-        .unwrap();
-
-    while let Some(msg) = socket.next().await {
-        info!(
-            "Subscribe: {:?}",
-            msg.unwrap()
-                .iter()
-                .map(|item| item.as_str().unwrap_or("invalid text"))
-                .collect::<Vec<&str>>()
-        );
-    }
+    recv_loop(&_bindip, &_http_sub_topic).await;
 }

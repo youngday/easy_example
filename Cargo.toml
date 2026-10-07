@@ -45,7 +45,9 @@ futures-util = { version = "0.3.32", default-features = false, features = [
     "std",
 ] }
 
-tmq = { version = "0.5.0" }
+# zeromq: native Rust ZeroMQ implementation (project "zmq.rs"), tokio async,
+# multipart frames over bytes::Bytes. Replaces tmq/libzmq bindings.
+zeromq = "0.6.0"
 
 rumqttc = "0.25.1"
 rumqttd = "0.20.0"
@@ -162,13 +164,13 @@ path = "examples/dds_zenoh/subscriber.rs"
 
 [[example]]
 name = "zmq_pub"
-path = "examples/zeromq_tmq/publish.rs"
+path = "examples/zeromq/publish.rs"
 [[example]]
 name = "zmq_sub"
-path = "examples/zeromq_tmq/subscriber.rs"
+path = "examples/zeromq/subscriber.rs"
 [[example]]
-name = "zeromq_tmq"
-path = "examples/zeromq_tmq/zeromq_tmq.rs"
+name = "zeromq_pubsub"
+path = "examples/zeromq/zeromq_pubsub.rs"
 # websocket
 [[example]]
 name = "ws_server"
